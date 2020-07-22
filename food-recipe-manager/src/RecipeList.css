@@ -1,0 +1,11 @@
+.recipeList {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background-color: #adff2f;
+}
+
+.recipeList>ul {
+    list-style: none;
+    padding-left: 0;
+}
