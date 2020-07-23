@@ -1,8 +1,10 @@
 .recipeCard {
-    width: 95%;
-    height: 50px;
-    margin-left: 2.5%;
-    margin-right: 2.5%;
-    margin-bottom: 10px;
+    width: 100%;
+    height: fit-content;
+    margin: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
     background-color: pink;
 }

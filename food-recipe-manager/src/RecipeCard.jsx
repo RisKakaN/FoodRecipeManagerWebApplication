@@ -5,11 +5,15 @@ import './RecipeCard.css';
 export default class RecipeCard extends React.Component {
 
     render() {
-        console.log('props: ' + this.props.name);
+        const recipe = this.props.recipe;
         return (
-            <li>
-                <div className="recipeCard">
-                    abc: {this.props.name}
+            <li className="recipeCard">
+                <div>
+                    Name: {recipe.name}
+                    <br />
+                    Category: {recipe.category}
+                    <br />
+                    Type: {recipe.type}
                 </div>
             </li>
         );
