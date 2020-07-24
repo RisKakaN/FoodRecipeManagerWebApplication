@@ -2,6 +2,8 @@ import React from 'react';
 
 import './NavigationBar.css';
 
+import { auth } from './Firebase.js';
+
 export default class NavigationBar extends React.Component {
 
     constructor(props) {
@@ -10,6 +12,7 @@ export default class NavigationBar extends React.Component {
 
         this.handleSearchChange = this.handleSearchChange.bind(this);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+        this.logout = this.logout.bind(this);
     }
 
     handleSearchChange(event) {
@@ -21,13 +24,19 @@ export default class NavigationBar extends React.Component {
         event.preventDefault();
     }
 
+    logout() {
+        auth.signOut()
+            .then(() => {
+                console.log('Signed out')
+            });
+    }
+
     render() {
         return (
             <div className="navigationBar">
                 <div className="navigationBarHomeButton">
                     FoodRecipeManager
                 </div>
-
                 <div className="navigationBarSearchField">
                     <form className="navigationBarSearchFieldForm" onSubmit={this.handleSearchSubmit}>
                         <label>
@@ -36,11 +45,10 @@ export default class NavigationBar extends React.Component {
                         <input className="navigationBarSearchFieldButton" type="submit" value="Search" />
                     </form>
                 </div>
-
                 <div className="navigationBarProfileButton">
-                    TBD Profile
+                    <button onClick={this.logout}>Logout</button>
+                    {this.props.user.displayName}
                 </div>
-
             </div>
         );
     }
