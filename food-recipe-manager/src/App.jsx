@@ -1,13 +1,10 @@
 import React from 'react';
-
-import './App.css';
-
 import { Route, Switch, Redirect, BrowserRouter } from "react-router-dom";
-
+import { auth } from './Firebase.js';
 import LoginPage from './LoginPage.jsx'
 import RecipesPage from './RecipesPage.jsx'
 import NotFoundPage from './NotFoundPage.jsx'
-import { auth } from './Firebase.js';
+import './App.css';
 
 export default class App extends React.Component {
 

@@ -1,10 +1,8 @@
 import React from 'react';
-
-import './RecipesPage.css';
-
 import NavigationBar from './NavigationBar.jsx'
 import RecipesFilterSideBar from './RecipesFilterSideBar.jsx'
 import RecipeList from './RecipeList.jsx'
+import './RecipesPage.css';
 
 export default class RecipesPage extends React.Component {
 

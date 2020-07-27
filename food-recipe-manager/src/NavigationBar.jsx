@@ -1,8 +1,8 @@
 import React from 'react';
-
-import './NavigationBar.css';
-
 import { auth } from './Firebase.js';
+import { useHistory } from "react-router-dom";
+import navigationBarLogo from './assets/navigationBarLogo.png';
+import './NavigationBar.css';
 
 export default class NavigationBar extends React.Component {
 
@@ -34,13 +34,15 @@ export default class NavigationBar extends React.Component {
     render() {
         return (
             <div className="navigationBar">
-                <div className="navigationBarHomeButton">
+                <div className="navigationBarHomeButton" onClick={this.homeButtonClick}>
+                    <img src={navigationBarLogo} alt="Logo" />
                     FoodRecipeManager
                 </div>
+                <HomeButton />
                 <div className="navigationBarSearchField">
                     <form className="navigationBarSearchFieldForm" onSubmit={this.handleSearchSubmit}>
                         <label>
-                            <input className="navigationBarSearchFieldInput" type="text" value={this.state.searchValue} onChange={this.handleSearchChange} />
+                            <input className="navigationBarSearchFieldInput" type="text" placeholder="Search recipes..." value={this.state.searchValue} onChange={this.handleSearchChange} />
                         </label>
                         <input className="navigationBarSearchFieldButton" type="submit" value="Search" />
                     </form>
@@ -53,4 +55,18 @@ export default class NavigationBar extends React.Component {
         );
     }
 
+}
+
+function HomeButton() {
+    const history = useHistory();
+
+    function handleClick() {
+        history.push("");
+    }
+
+    return (
+        <button type="button" onClick={handleClick}>
+            Go home
+        </button>
+    );
 }

@@ -1,9 +1,7 @@
 import React from 'react';
-
 import { auth } from './Firebase.js';
-
 import { Redirect } from "react-router-dom";
-
+import PulseLoader from "react-spinners/PulseLoader";
 import './LoginPage.css';
 
 export default class LoginPage extends React.Component {
@@ -14,6 +12,7 @@ export default class LoginPage extends React.Component {
         this.state = {
             email: '',
             password: '',
+            loginLoading: false,
             loginFailMessage: null
         };
 
@@ -28,35 +27,38 @@ export default class LoginPage extends React.Component {
     }
 
     login(e) {
-        // start spinner
         e.preventDefault();
-        auth.signInWithEmailAndPassword(
-            this.state.email, this.state.password
-        ).then(() => {
-            // stop spinner
-        }).catch((error) => {
-            this.setState({ loginFailMessage: error.message });
-        });
-        // TODO: Start a loader. Some animating spinner, etc.
-        // Then in the promise, check fail and handle it. E.g. stop the animating spinner and show "failed to login" label.
-        // Use vars above...
-        // If login is succeeded, it will be handled by parent's auth.onAuthStateChanged listener.
+        // Start loading animation. Add small delay in case connection is too fast, which prevents a flickering experience.
+        this.setState({ loginLoading: true });
+        setTimeout(() => {
+            auth.signInWithEmailAndPassword(
+                this.state.email, this.state.password
+            ).then(() => {
+                this.setState({ loginLoading: false });
+            }).catch((error) => {
+                this.setState({ loginLoading: false, loginFailMessage: error.message });
+            });
+        }, 500);
     }
 
     render() {
-        console.log('Start to render LoginPage. isUserLoggedIn: ' + this.props.isUserLoggedIn);
         if (this.props.isUserLoggedIn) {
-            console.log('User exists, render RecipesPage');
             return <Redirect to={'/recipes'} />;
         } else if (this.props.isUserLoggedIn === false) {
-            console.log('User does not exist, render LoginPage');
             return (
                 <div className="loginPage">
                     <form onSubmit={this.login}>
                         <input type="email" name="email" placeholder="Email..." autoComplete="on" onChange={this.handleLoginInputChange} value={this.state.email} />
                         <input type="password" name="password" placeholder="Password..." autoComplete="on" onChange={this.handleLoginInputChange} value={this.state.password} />
-                        <button>Login</button> {/* conditional spinner render */}
+                        <button>Login</button>
                     </form>
+                    {this.state.loginLoading && <div className="loginPageLoginLoader">
+                        <PulseLoader
+                            size={10}
+                            color={"#123abc"}
+                            loading={this.state.loginLoading}
+                        />
+                    </div>}
                     {this.state.loginFailMessage && this.state.loginFailMessage}
                 </div>
             );

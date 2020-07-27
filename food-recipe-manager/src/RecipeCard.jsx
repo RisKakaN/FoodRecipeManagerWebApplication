@@ -1,5 +1,4 @@
 import React from 'react';
-
 import './RecipeCard.css';
 
 export default class RecipeCard extends React.Component {

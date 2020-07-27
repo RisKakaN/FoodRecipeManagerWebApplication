@@ -1,5 +1,4 @@
 import React from 'react';
-
 import './RecipesFilterSideBar.css';
 
 export default class RecipesFilterSideBar extends React.Component {
