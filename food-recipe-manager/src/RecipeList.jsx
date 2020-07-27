@@ -5,6 +5,7 @@ import RecipeCard from './RecipeCard.jsx'
 import './RecipeList.css';
 
 export default class RecipeList extends React.Component {
+
     constructor(props) {
         super(props);
 
@@ -12,23 +13,33 @@ export default class RecipeList extends React.Component {
             dataLoading: true,
             recipes: [],
         };
+
+        this.isComponentMounted = false;
     }
 
     componentDidMount() {
         if (this.props.user) {
-            setTimeout(() => {
+            this.isComponentMounted = true;
+            this.timeOutId = setTimeout(() => {
                 this.fetchDataFromFirebase();
             }, 500);
         }
     }
 
+    componentWillUnmount() {
+        clearTimeout(this.timeOutId);
+        this.isComponentMounted = false;
+    }
+
     fetchDataFromFirebase() {
         const recipesRef = Firebase.database().ref('recipes/' + this.props.user.uid);
         recipesRef.once('value', (snapshot) => {
-            this.setState({
-                dataLoading: false,
-                recipes: snapshot.val()
-            });
+            if (this.isComponentMounted) {
+                this.setState({
+                    dataLoading: false,
+                    recipes: snapshot.val()
+                });
+            }
         });
     }
 

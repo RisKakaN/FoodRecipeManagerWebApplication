@@ -16,8 +16,19 @@ export default class LoginPage extends React.Component {
             loginFailMessage: null
         };
 
+        this.isComponentMounted = false;
+
         this.handleLoginInputChange = this.handleLoginInputChange.bind(this);
         this.login = this.login.bind(this);
+    }
+
+    componentDidMount() {
+        this.isComponentMounted = true;
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.timeOutId);
+        this.isComponentMounted = false;
     }
 
     handleLoginInputChange(e) {
@@ -30,13 +41,17 @@ export default class LoginPage extends React.Component {
         e.preventDefault();
         // Start loading animation. Add small delay in case connection is too fast, which prevents a flickering experience.
         this.setState({ loginLoading: true });
-        setTimeout(() => {
+        this.timeOutId = setTimeout(() => {
             auth.signInWithEmailAndPassword(
                 this.state.email, this.state.password
             ).then(() => {
-                this.setState({ loginLoading: false });
+                if (this.isComponentMounted) {
+                    this.setState({ loginLoading: false });
+                }
             }).catch((error) => {
-                this.setState({ loginLoading: false, loginFailMessage: error.message });
+                if (this.isComponentMounted) {
+                    this.setState({ loginLoading: false, loginFailMessage: error.message });
+                }
             });
         }, 500);
     }
