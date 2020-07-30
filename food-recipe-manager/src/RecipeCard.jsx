@@ -1,12 +1,25 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import './RecipeCard.css';
 
-export default class RecipeCard extends React.Component {
+class RecipeCard extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick() {
+        this.props.history.push(
+            "/recipes/" + this.props.recipe.name,
+            { recipe: this.props.recipe }
+        );
+    }
 
     render() {
         const recipe = this.props.recipe;
         return (
-            <li className="recipeCard">
+            <li className="recipeCard" onClick={this.handleClick}>
                 <div>
                     Name: {recipe.name}
                     <br />
@@ -17,5 +30,7 @@ export default class RecipeCard extends React.Component {
             </li>
         );
     }
-
 }
+
+// Use withRouter in order to access history. This will enable this.props.history.push().
+export default withRouter(RecipeCard);

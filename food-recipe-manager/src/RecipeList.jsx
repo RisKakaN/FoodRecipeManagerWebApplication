@@ -22,7 +22,7 @@ export default class RecipeList extends React.Component {
             this.isComponentMounted = true;
             this.timeOutId = setTimeout(() => {
                 this.fetchDataFromFirebase();
-            }, 500);
+            }, 300);
         }
     }
 

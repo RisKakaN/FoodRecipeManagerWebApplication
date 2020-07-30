@@ -53,13 +53,13 @@ export default class LoginPage extends React.Component {
                     this.setState({ loginLoading: false, loginFailMessage: error.message });
                 }
             });
-        }, 500);
+        }, 300);
     }
 
     render() {
-        if (this.props.isUserLoggedIn) {
+        if (this.props.user) {
             return <Redirect to={'/recipes'} />;
-        } else if (this.props.isUserLoggedIn === false) {
+        } else {
             return (
                 <div className="loginPage">
                     <form onSubmit={this.login}>
@@ -77,12 +77,6 @@ export default class LoginPage extends React.Component {
                     {this.state.loginFailMessage && this.state.loginFailMessage}
                 </div>
             );
-        } else {
-            // Return empty screen while Firebase tries to authenticate.
-            // This prevents showing the login page to appear for 1 sec, and then go to a logged in state (if user is logged in).
-            // It makes it look like it is "loading".
-            // TODO: Try to implement a better and smoother way without this "middle screen", while waiting for authentication.
-            return <div></div>;
         }
     }
 }
