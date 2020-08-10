@@ -1,6 +1,7 @@
 .recipeDetailsPage {
     width: 100%;
-    height: 100%;
+    /* Base subtraction of height should be 50px due to navigation bar being 50px high.  */
+    height: calc(100% - 50px);
     overflow-y: auto;
     color: white;
     background-color: #373737;

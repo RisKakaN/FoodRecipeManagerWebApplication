@@ -12,6 +12,7 @@ export default class RecipeList extends React.Component {
         this.state = {
             dataLoading: true,
             recipes: [],
+            dataIsEmpty: false,
         };
 
         this.isComponentMounted = false;
@@ -35,32 +36,44 @@ export default class RecipeList extends React.Component {
         const recipesRef = Firebase.database().ref('recipes/' + this.props.user.uid);
         recipesRef.once('value', (snapshot) => {
             if (this.isComponentMounted) {
-                this.setState({
-                    dataLoading: false,
-                    recipes: snapshot.val()
-                });
+                if (snapshot.val()) {
+                    this.setState({
+                        dataLoading: false,
+                        recipes: snapshot.val()
+                    });
+                } else {
+                    this.setState({
+                        dataLoading: false,
+                        dataIsEmpty: true
+                    });
+                }
             }
         });
     }
 
     render() {
+        const recipes = this.state.recipes;
         return (
+
             <div className="recipeList">
-                {this.state.dataLoading ?
-                    <div className="recipeListDataLoader">
-                        <PulseLoader
-                            size={15}
-                            color={"#123abc"}
-                            loading={this.state.dataLoading}
-                        />
-                    </div>
-                    :
-                    <ul>
-                        {this.state.recipes.map((recipe) => {
-                            return <RecipeCard key={recipe.name} recipe={recipe} />;
-                        })}
-                    </ul>
-                }
+                {!this.state.dataIsEmpty ?
+
+                    this.state.dataLoading ?
+                        <div className="recipeListDataLoader">
+                            <PulseLoader
+                                size={15}
+                                color={"#123abc"}
+                                loading={this.state.dataLoading}
+                            />
+                        </div>
+                        :
+                        <ul>
+                            {Object.keys(recipes).map((recipe) => {
+                                return <RecipeCard key={recipes[recipe].name} recipe={recipes[recipe]} />;
+                            })}
+                        </ul>
+
+                    : <div>empty</div>}
             </div>
         );
     }

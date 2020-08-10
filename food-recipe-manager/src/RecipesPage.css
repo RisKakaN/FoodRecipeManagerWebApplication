@@ -1,7 +1,6 @@
 .recipesPage {
     width: 100%;
     height: 100%;
-    overflow-y: hidden;
     display: flex;
     flex-flow: row wrap;
     background-color: #373737;
@@ -10,7 +9,6 @@
 .recipesPageNavigationBar {
     width: 100%;
     height: 50px;
-    height: fit-content;
 }
 
 .recipesPageSideBar {
@@ -21,6 +19,4 @@
 .recipesPageRecipeList {
     width: calc(100% - 220px);
     height: calc(100% - 50px);
-    overflow-y: auto;
-
 }

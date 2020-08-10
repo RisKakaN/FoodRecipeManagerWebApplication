@@ -11,7 +11,7 @@ class RecipeCard extends React.Component {
 
     handleClick() {
         this.props.history.push(
-            "/recipes/" + this.props.recipe.name,
+            "/recipes/details/" + this.props.recipe.name,
             { recipe: this.props.recipe }
         );
     }

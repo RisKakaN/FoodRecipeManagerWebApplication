@@ -9,7 +9,7 @@ export default class RecipesPage extends React.Component {
         return (
             <div className="recipesPage">
                 <div className="recipesPageSideBar">
-                    <RecipesFilterSideBar />
+                    <RecipesFilterSideBar user={this.props.user} />
                 </div>
 
                 <div className="recipesPageRecipeList">

@@ -7,6 +7,8 @@ export default class RecipeDetailsPage extends React.Component {
 
     constructor(props) {
         super(props);
+        console.log(this.props.location.state);
+        // TODO: if path empty, push 404
 
         this.state = {
             renderPageNotFound: false,
@@ -30,13 +32,11 @@ export default class RecipeDetailsPage extends React.Component {
         this.dataRequested = true;
         const recipeRef = Firebase.database().ref('recipes/' + userId);
         recipeRef.orderByChild('name').equalTo(recipeName).once('value', (snapshot) => {
-            if (snapshot.val()) {
-                if (this.isComponentMounted) {
-                    this.setState({
-                        recipe: Object.values(snapshot.val())[0]
-                    });
-                    this.dataLoading = false;
-                }
+            if (snapshot.val() && this.isComponentMounted) {
+                this.dataLoading = false;
+                this.setState({
+                    recipe: Object.values(snapshot.val())[0]
+                });
             } else {
                 // Trying to enter a url for a recipe that does not exist will cause redirection to NotFoundPage.
                 this.props.history.replace("/404");
@@ -55,6 +55,7 @@ export default class RecipeDetailsPage extends React.Component {
         }
 
         const recipe = this.state.recipe;
+        const ingredients = recipe !== null ? recipe.ingredients : null;
         return (
             <div className="recipeDetailsPage">
                 {!this.dataLoading ?
@@ -74,10 +75,10 @@ export default class RecipeDetailsPage extends React.Component {
                         Ingredients:
                         <br />
                         <ul>
-                            {(recipe.ingredients).map((ingredient) => {
+                            {Object.keys(ingredients).map((ingredient) => {
                                 return (
-                                    <li key={ingredient.name}>
-                                        {ingredient.amount} {ingredient.unit === "N/A" ? null : ingredient.unit} {ingredient.name}
+                                    <li key={ingredients[ingredient].name}>
+                                        {ingredients[ingredient].amount} {ingredients[ingredient].unit === "N/A" ? null : ingredients[ingredient].unit} {ingredients[ingredient].name}
                                     </li>
                                 );
                             })}
