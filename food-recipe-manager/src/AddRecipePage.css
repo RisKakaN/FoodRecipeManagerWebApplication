@@ -26,7 +26,7 @@
 
 /* ============================== Top Left ============================== */
 .addRecipePageTopLeft {
-    width: fit-content;
+    width: 400px;
     height: fit-content;
     display: flex;
     flex-direction: column;
@@ -46,7 +46,7 @@
     cursor: pointer;
 }
 
-.addRecipePagePhotoPlaceholder {
+.addRecipePagePhotoHolder {
     cursor: pointer;
 }
 
@@ -103,7 +103,6 @@ input[type="file"] {
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
 .addRecipePageNameLabel {
@@ -233,14 +232,6 @@ input[type="file"] {
     display: flex;
     align-items: center;
 }
-
-/* .addRecipePageTimeErrorLabel {
-    width: 100%;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    color: red;
-} */
 
 /* ============================== Bottom ============================== */
 .addRecipePageBottom {
@@ -470,7 +461,7 @@ input[type="file"] {
     justify-content: center;
 }
 
-.addRecipePageDataLoader {
+.addRecipePageUploadingLoader {
     width: 100%;
     height: 50px;
     display: flex;

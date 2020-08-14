@@ -13,12 +13,9 @@ class AddRecipePage extends React.Component {
 
         this.state = {
             recipeUploading: false,
-            fieldsValid: true,
             nameValid: true,
-            timeFormatValid: true,
-            ingredientsValid: true,
             ingredientInputError: null,
-            errorMessage: "Please enter valid values.",
+            errorMessage: null,
             localPhoto: null,
             localPhotoPreview: null,
             localPhotoLoadError: null,
@@ -42,7 +39,6 @@ class AddRecipePage extends React.Component {
         this.isComponentMounted = false;
 
         this.handlePhotoChange = this.handlePhotoChange.bind(this);
-        // this.handlePhotoUpload = this.handlePhotoUpload.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.removeLocalPhoto = this.removeLocalPhoto.bind(this);
         this.decrementPortions = this.decrementPortions.bind(this);
@@ -125,22 +121,19 @@ class AddRecipePage extends React.Component {
         if (this.state.currentIngredientName.trim() !== "") {
             if (!this.state.ingredients.some(ingredient => ingredient.name === this.state.currentIngredientName)) {
                 this.setState(prevState => ({
-                    ingredientsValid: true,
                     ingredientInputError: null,
-                    ingredients: [...prevState.ingredients, { amount: prevState.currentIngredientAmount, unit: prevState.currentIngredientUnit, name: prevState.currentIngredientName }],
+                    ingredients: [...prevState.ingredients, { amount: prevState.currentIngredientAmount ? parseFloat(prevState.currentIngredientAmount) : null, unit: prevState.currentIngredientUnit, name: prevState.currentIngredientName }],
                     currentIngredientAmount: "",
                     currentIngredientUnit: "N/A",
                     currentIngredientName: ""
                 }));
             } else {
                 this.setState({
-                    ingredientsValid: false,
                     ingredientInputError: "The ingredient already exists."
                 });
             }
         } else {
             this.setState({
-                ingredientsValid: false,
                 ingredientInputError: "Please input at least a name."
             });
         }
@@ -149,7 +142,6 @@ class AddRecipePage extends React.Component {
     removeIngredient(e) {
         if (this.state.ingredients.length === 1) {
             this.setState(prevState => ({
-                ingredientsValid: false,
                 ingredientInputError: "Please add at least one ingredient.",
                 ingredients: prevState.ingredients.filter(ingredient => ingredient.name !== e.name)
             }));
@@ -174,12 +166,17 @@ class AddRecipePage extends React.Component {
     }
 
     ingredientsAdded() {
-        const ingredientsValid = this.state.ingredients && this.state.ingredients.length;
+        if (this.state.ingredients && this.state.ingredients.length) {
+            this.setState({
+                ingredientInputError: null
+            });
+            return true;
+        }
         this.setState({
-            ingredientsValid: ingredientsValid,
             ingredientInputError: "Please add at least one ingredient.",
+            errorMessage: "Please add at least one ingredient."
         });
-        return ingredientsValid;
+        return false;
     }
 
     deleteFirebaseUploadedPhoto() {
@@ -188,7 +185,6 @@ class AddRecipePage extends React.Component {
             if (this.isComponentMounted) {
                 this.setState({
                     recipeUploading: false,
-                    fieldsValid: false,
                     errorMessage: "Recipe could not be added, please try again."
                 });
             }
@@ -202,17 +198,17 @@ class AddRecipePage extends React.Component {
         if (this.checkAllFieldsValid()) {
             this.setState({
                 recipeUploading: true,
-                fieldsValid: true
+                errorMessage: null
             });
 
             this.databaseRef = Firebase.database().ref("recipes/" + this.props.user.uid);
-            this.databaseRef.orderByChild("name").equalTo(this.state.name).once("value", (snapshot) => {
+            this.databaseRef.orderByChild("name").equalTo(this.state.name).once("value").then((snapshot) => {
                 if (!snapshot.val()) {
                     let recipe = {
                         photoPath: this.state.photoPath,
                         name: this.state.name,
-                        timeHours: this.state.timeHours,
-                        timeMinutes: this.state.timeMinutes,
+                        timeHours: parseInt(this.state.timeHours, 10),
+                        timeMinutes: parseInt(this.state.timeMinutes, 10),
                         category: this.state.category,
                         type: this.state.type,
                         portions: this.state.portions,
@@ -222,49 +218,43 @@ class AddRecipePage extends React.Component {
                     if (this.state.photoPath) {
                         const storageRef = storage.ref("images/" + this.props.user.uid + "/" + this.state.photoPath);
                         storageRef.put(this.state.localPhoto).then(() => {
-                            storageRef.getDownloadURL().then(url => {
+                            storageRef.getDownloadURL().then((url) => {
                                 recipe.photoDownloadUri = url;
-                                this.databaseRef.push(recipe, (error) => {
-                                    if (error) {
-                                        // Error: Could not add the recipe to Firebase RealTimeDatabase.
-                                        this.deleteFirebaseUploadedPhoto();
-                                    } else {
-                                        if (this.isComponentMounted) {
-                                            this.props.history.push(
-                                                "/recipes/details/" + this.state.name,
-                                                { recipe: recipe }
-                                            );
-                                        }
+                                this.databaseRef.push(recipe).then(() => {
+                                    if (this.isComponentMounted) {
+                                        this.props.history.push(
+                                            "/recipes/details/" + this.state.name,
+                                            { recipe: recipe }
+                                        );
                                     }
+                                }).catch(() => {
+                                    // Error: Could not add the recipe to Firebase RealTimeDatabase.
+                                    this.deleteFirebaseUploadedPhoto();
                                 });
-                            }, (error) => {
+                            }).catch(() => {
                                 // Error: Could not fetch the photo DownloadURL from Firebase Storage.
                                 this.deleteFirebaseUploadedPhoto();
                             });
-                        },
-                            (error) => {
-                                // Error: Photo could not be uploaded to Firebase Storage.
-                                if (this.isComponentMounted) {
-                                    this.setState({
-                                        recipeUploading: false,
-                                        fieldsValid: false,
-                                        errorMessage: "Recipe could not be added, please try again."
-                                    });
-                                }
-                            });
-                    } else {
-                        this.databaseRef.push(recipe, (error) => {
-                            if (error) {
-                                // Error: Could not add the recipe to Firebase RealTimeDatabase.
-                                this.deleteFirebaseUploadedPhoto();
-                            } else {
-                                if (this.isComponentMounted) {
-                                    this.props.history.push(
-                                        "/recipes/details/" + this.state.name,
-                                        { recipe: recipe }
-                                    );
-                                }
+                        }).catch(() => {
+                            // Error: Photo could not be uploaded to Firebase Storage.
+                            if (this.isComponentMounted) {
+                                this.setState({
+                                    recipeUploading: false,
+                                    errorMessage: "Recipe could not be added, please try again."
+                                });
                             }
+                        });
+                    } else {
+                        this.databaseRef.push(recipe).then(() => {
+                            if (this.isComponentMounted) {
+                                this.props.history.push(
+                                    "/recipes/details/" + this.state.name,
+                                    { recipe: recipe }
+                                );
+                            }
+                        }).catch(() => {
+                            // Error: Could not add the recipe to Firebase RealTimeDatabase.
+                            this.deleteFirebaseUploadedPhoto();
                         });
                     }
                 } else {
@@ -273,9 +263,17 @@ class AddRecipePage extends React.Component {
                         this.setState({
                             recipeUploading: false,
                             nameValid: false,
-                            fieldsValid: false,
+                            errorMessage: "Name already exists."
                         });
                     }
+                }
+            }).catch(() => {
+                // Error: Could not fetch from Firebase.
+                if (this.isComponentMounted) {
+                    this.setState({
+                        recipeUploading: false,
+                        errorMessage: "Recipe could not be added, please try again."
+                    });
                 }
             });
         } else {
@@ -283,7 +281,7 @@ class AddRecipePage extends React.Component {
             if (this.isComponentMounted) {
                 this.setState({
                     recipeUploading: false,
-                    fieldsValid: false,
+                    errorMessage: "Please enter valid values."
                 });
             }
         }
@@ -295,7 +293,7 @@ class AddRecipePage extends React.Component {
                 <div className="addRecipePageTop">
                     {/* ============================== Photo ============================== */}
                     <div className="addRecipePageTopLeft">
-                        <label className="addRecipePagePhotoPlaceholder">
+                        <label className="addRecipePagePhotoHolder">
                             <input type="file" name="photo" accept="image/*" onClick={e => e.target.value = null} onChange={this.handlePhotoChange} />
                             {this.state.localPhoto ?
                                 <img className="addRecipePagePhoto" src={this.state.localPhotoPreview} alt="Click to change" />
@@ -361,9 +359,6 @@ class AddRecipePage extends React.Component {
                                 <input className="addRecipePageTimeMinutesInput" type="number" name="timeMinutes" placeholder="mm" onChange={this.handleInputChange} value={this.state.timeMinutes} min="0" max="59" autoComplete="off" required />
                                 <div className="addRecipePageTimeMinutesLabel">minutes</div>
                             </div>
-                            {/* <div className="addRecipePageTimeErrorLabel">
-                                {this.state.timeFormatValid ? null : "Invalid time format."}
-                            </div> */}
                         </div>
 
                     </div>
@@ -402,14 +397,14 @@ class AddRecipePage extends React.Component {
                                 {Object.keys(this.state.ingredients).map((ingredient => {
                                     return (<li className="addRecipePageIngredientsItem" key={this.state.ingredients[ingredient].name}>
                                         <div className="addRecipePageIngredientsItemAmount">{this.state.ingredients[ingredient].amount}</div>
-                                        <div className="addRecipePageIngredientsItemUnit">{this.state.ingredients[ingredient].unit}</div>
+                                        <div className="addRecipePageIngredientsItemUnit">{this.state.ingredients[ingredient].unit === "N/A" ? null : this.state.ingredients[ingredient].unit}</div>
                                         <div className="addRecipePageIngredientsItemName">{this.state.ingredients[ingredient].name}</div>
                                         <div className="addRecipePageIngredientsItemRemove"><button onClick={() => this.removeIngredient(this.state.ingredients[ingredient])}>X</button></div>
                                     </li>);
                                 }))}
                             </ul>
                             <div className="addRecipePageIngredientsErrorLabel">
-                                {!this.state.ingredientsValid && this.state.ingredientInputError}
+                                {this.state.ingredientInputError}
                             </div>
                         </div>
                     </div>
@@ -426,10 +421,10 @@ class AddRecipePage extends React.Component {
                 {/* ============================== Add button ============================== */}
                 <div className="addRecipePageAddNewRecipe">
                     <div className="addRecipePageAddNewRecipeErrorLabel">
-                        {this.state.fieldsValid ? null : this.state.errorMessage}
+                        {this.state.errorMessage}
                     </div>
                     {this.state.recipeUploading ?
-                        <div className="addRecipePageDataLoader">
+                        <div className="addRecipePageUploadingLoader">
                             <PulseLoader
                                 size={15}
                                 color={"#123abc"}
@@ -437,9 +432,7 @@ class AddRecipePage extends React.Component {
                             />
                         </div>
                         :
-                        <button className="addRecipePageAddNewRecipeButton">
-                            Add new recipe
-                            </button>
+                        <button className="addRecipePageAddNewRecipeButton">Add new recipe</button>
                     }
                 </div>
             </form>

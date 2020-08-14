@@ -1,16 +1,16 @@
 .recipeDetailsPage {
-    width: 100%;
+    width: 96%;
     /* Base subtraction of height should be 50px due to navigation bar being 50px high.  */
-    height: calc(100% - 50px);
+    height: calc(100% - 90px);
+    display: flex;
+    flex-direction: column;
     overflow-y: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 2%;
+    padding-right: 2%;
     color: white;
     background-color: #373737;
-}
-
-.recipeDetailsPageContent {
-    width: 100%;
-    height: 100%;
-    white-space: pre-line;
 }
 
 .recipeDetailsPageDataLoader {
@@ -20,4 +20,513 @@
     align-items: center;
     justify-content: center;
     background-color: #373737;
+}
+
+
+/* ============================== Top ============================== */
+.recipeDetailsPageTop {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+    background-color: #212121;
+}
+
+/* ============================== Top Left ============================== */
+.recipeDetailsPageTopLeft {
+    width: 400px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+/* ============================== Photo ============================== */
+.recipeDetailsPagePhoto {
+    width: 100%;
+    max-width: 400px;
+    height: 100%;
+    max-height: 400px;
+    cursor: pointer;
+}
+
+.recipeDetailsPagePhotoHolder {
+    cursor: pointer;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.recipeDetailsPagePhotoPlaceholderImage {
+    width: calc(100% - 40px);
+    max-width: 360px;
+    height: calc(100% - 40px);
+    max-height: 360px;
+    padding: 20px;
+    background-color: #8e8e8e;
+}
+
+.recipeDetailsPagePhotoErrorLabel {
+    width: fit-content;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    color: red;
+}
+
+.recipeDetailsPagePhotoRemove {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+}
+
+.recipeDetailsPagePhotoRemoveButton {
+    width: fit-content;
+    height: 30px;
+    margin-top: 10px;
+}
+
+/* ============================== Top Right ============================== */
+.recipeDetailsPageTopRight {
+    width: 600px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+/* ============================== Name ============================== */
+.recipeDetailsPageName {
+    width: 100%;
+    height: fit-content;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.recipeDetailsPageNameLabel {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.recipeDetailsPageNameInput {
+    /* Due to input default left and right padding equals to 4px, it is needed to subtract by 4px to get perfect alignment. */
+    width: calc(100% - 4px);
+    height: 30px;
+    border-width: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.recipeDetailsPageNameErrorLabel {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    color: red;
+}
+
+/* ============================== Category and Type ============================== */
+.recipeDetailsPageCategoryAndType {
+    width: 100%;
+    height: fit-content;
+    margin-bottom: 50px;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
+/* ============================== Category ============================== */
+.recipeDetailsPageCategory {
+    width: calc(50% - 10px);
+    height: 60px;
+    margin-right: 20px;
+}
+
+.recipeDetailsPageCategoryLabel {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.recipeDetailsPageCategorySelector {
+    width: 100%;
+    height: 30px;
+}
+
+/* ============================== Type ============================== */
+.recipeDetailsPageType {
+    width: calc(50% - 10px);
+    height: 60px;
+}
+
+.recipeDetailsPageTypeLabel {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.recipeDetailsPageTypeSelector {
+    width: 100%;
+    height: 30px;
+}
+
+/* ============================== Time ============================== */
+.recipeDetailsPageTime {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.recipeDetailsPageTimeLabel {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.recipeDetailsPageTimeInput {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+
+.recipeDetailsPageTimeHoursInput {
+    width: 50px;
+    height: 30px;
+    margin-right: 5px;
+    border-width: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.recipeDetailsPageTimeHours {
+    width: fit-content;
+    height: 30px;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.recipeDetailsPageTimeHoursLabel {
+    width: fit-content;
+    height: 30px;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.recipeDetailsPageTimeMinutesInput {
+    width: 50px;
+    height: 30px;
+    margin-right: 5px;
+    border-width: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.recipeDetailsPageTimeMinutes {
+    width: fit-content;
+    height: 30px;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.recipeDetailsPageTimeMinutesLabel {
+    width: fit-content;
+    height: 30px;
+    display: flex;
+    align-items: center;
+}
+
+/* ============================== Bottom ============================== */
+.recipeDetailsPageBottom {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+    background-color: #212121;
+}
+
+/* ============================== Bottom Left ============================== */
+.recipeDetailsPageBottomLeft {
+    width: 400px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+/* ============================== Portions ============================== */
+.recipeDetailsPagePortions {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.recipeDetailsPagePortionsLabel {
+    width: fit-content;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.recipeDetailsPagePortionsDecrementButton {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.recipeDetailsPagePortionsIncrementButton {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+}
+
+/* ============================== Ingredients ============================== */
+.recipeDetailsPageIngredients {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+}
+
+.recipeDetailsPageIngredientsLabel {
+    width: fit-content;
+    height: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.recipeDetailsPageIngredientsInput {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.recipeDetailsPageIngredientsInputAmount {
+    width: 20%;
+    height: 100%;
+    border-width: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-right: 1%;
+}
+
+.recipeDetailsPageIngredientsInputUnitSelector {
+    width: 15%;
+    height: 100%;
+    border-width: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-right: 1%;
+}
+
+.recipeDetailsPageIngredientsInputName {
+    width: 35%;
+    height: 100%;
+    border-width: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-right: 1%;
+}
+
+.recipeDetailsPageIngredientsInputAddButton {
+    width: calc(27% - 8px);
+    height: 100%;
+    padding: 0;
+}
+
+.recipeDetailsPageIngredientsList {
+    width: 100%;
+    height: fit-content;
+    list-style: none;
+    padding: 0;
+}
+
+.recipeDetailsPageIngredientsItem {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.recipeDetailsPageIngredientsItemAmount {
+    width: 20%;
+    height: 100%;
+    margin-right: 1%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.recipeDetailsPageIngredientsItemUnit {
+    width: 15%;
+    height: 100%;
+    margin-right: 1%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.recipeDetailsPageIngredientsItemName {
+    width: 35%;
+    height: 100%;
+    margin-right: 1%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.recipeDetailsPageIngredientsItemRemove {
+    width: 27%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.recipeDetailsPageIngredientsErrorLabel {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    color: red;
+}
+
+/* ============================== Bottom Right ============================== */
+.recipeDetailsPageBottomRight {
+    width: 600px;
+    min-height: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+/* ============================== Instructions ============================== */
+.recipeDetailsPageInstructions {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    white-space: pre-wrap;
+}
+
+.recipeDetailsPageInstructionsLabel {
+    width: fit-content;
+    height: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.recipeDetailsPageInstructionsInput {
+    min-height: 300px;
+    height: fit-content;
+    border-width: 0;
+    resize: none;
+}
+
+/* ============================== Edit button ============================== */
+.recipeDetailsPageEditRecipe {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.recipeDetailsPageEditRecipeButton {
+    width: 200px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.recipeDetailsPageEditRecipeModeButtons {
+    width: fit-content;
+    height: 50px;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.recipeDetailsPageEditRecipeSaveButton {
+    width: 200px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.recipeDetailsPageEditRecipeDeleteButton {
+    width: 200px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.recipeDetailsPageUploadingEditLoader {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #373737;
+}
+
+.recipeDetailsPageEditRecipeErrorLabel {
+    width: fit-content;
+    height: fit-content;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    color: red;
 }
