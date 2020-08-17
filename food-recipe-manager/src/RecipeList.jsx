@@ -54,10 +54,8 @@ export default class RecipeList extends React.Component {
     render() {
         const recipes = this.state.recipes;
         return (
-
             <div className="recipeList">
                 {!this.state.dataIsEmpty ?
-
                     this.state.dataLoading ?
                         <div className="recipeListDataLoader">
                             <PulseLoader
@@ -72,8 +70,7 @@ export default class RecipeList extends React.Component {
                                 return <RecipeCard key={recipes[recipe].name} recipe={recipes[recipe]} />;
                             })}
                         </ul>
-
-                    : <div>empty</div>}
+                    : <div className="recipeListEmpty">You currently have no recipes. Please add recipes :)</div>}
             </div>
         );
     }

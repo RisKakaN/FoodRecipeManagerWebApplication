@@ -3,20 +3,18 @@
     height: 100%;
     display: flex;
     flex-flow: row wrap;
+    justify-content: center;
+    overflow-y: auto;
     background-color: #373737;
-}
-
-.recipesPageNavigationBar {
-    width: 100%;
-    height: 50px;
 }
 
 .recipesPageSideBar {
     width: 220px;
-    height: calc(100% - 50px);
+    height: auto;
 }
 
 .recipesPageRecipeList {
+    min-width: 270px;
     width: calc(100% - 220px);
     height: calc(100% - 50px);
 }

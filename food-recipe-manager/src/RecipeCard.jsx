@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import noPhotoAvailablePlaceholder from './assets/noPhotoAvailablePlaceholder.png';
 import './RecipeCard.css';
 
 class RecipeCard extends React.Component {
@@ -19,15 +20,27 @@ class RecipeCard extends React.Component {
     render() {
         const recipe = this.props.recipe;
         return (
-            <li className="recipeCard" onClick={this.handleClick}>
-                <div>
-                    Name: {recipe.name}
-                    <br />
+            <div className="recipeCard" onClick={this.handleClick}>
+                <div className="recipeCardPhotoFrame">
+                    {this.props.recipe.photoDownloadUri ?
+                        <img className="recipeCardPhoto" src={this.props.recipe.photoDownloadUri} alt="Not available" />
+                        :
+                        <img className="recipeCardPhoto" src={noPhotoAvailablePlaceholder} alt="Not available" />
+                    }
+                </div>
+                <div className="recipeCardName">
+                    {recipe.name}
+                </div>
+                <div className="recipeCardCategory">
                     Category: {recipe.category}
-                    <br />
+                </div>
+                <div className="recipeCardType">
                     Type: {recipe.type}
                 </div>
-            </li>
+                <div className="recipeCardTime">
+                    Time: {recipe.timeHours} hours, {recipe.timeMinutes} mins
+                </div>
+            </div>
         );
     }
 }
