@@ -28,7 +28,7 @@ export default class RecipeList extends React.Component {
             this.isComponentMounted = true;
             this.timeOutId = setTimeout(() => {
                 this.fetchDataFromFirebase();
-            }, 300);
+            }, 100);
         }
     }
 
@@ -62,6 +62,7 @@ export default class RecipeList extends React.Component {
 
     handleSearchSubmit(e) {
         e.preventDefault();
+        // Not needed for now...
     }
 
     render() {
@@ -79,15 +80,17 @@ export default class RecipeList extends React.Component {
                         </div>
                         :
                         <>
-                            <div className="recipeListSearch">
+                            <form className="recipeListSearch" onSubmit={this.handleSearchSubmit}>
                                 <input className="recipeListSearchInput" type="text" placeholder="Search recipes..." value={this.state.searchValue} onChange={this.handleSearchChange} />
                                 <div className="recipeListSearchButton" onClick={this.handleSearchSubmit}>
                                     <img src={searchIcon} alt="Search" />
                                 </div>
-                            </div>
+                            </form>
                             <ul>
                                 {Object.keys(recipes).map((recipe) => {
-                                    return <RecipeCard key={recipes[recipe].name} recipe={recipes[recipe]} />;
+                                    if (recipes[recipe].name.toLowerCase().includes(this.state.searchValue.toLowerCase())) {
+                                        return <RecipeCard key={recipes[recipe].name} recipe={recipes[recipe]} />;
+                                    }
                                 })}
                             </ul>
                         </>

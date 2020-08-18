@@ -53,7 +53,7 @@ export default class LoginPage extends React.Component {
                     this.setState({ loginLoading: false, loginFailMessage: error.message });
                 }
             });
-        }, 300);
+        }, 100);
     }
 
     render() {
