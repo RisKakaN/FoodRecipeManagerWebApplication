@@ -285,7 +285,6 @@ class RecipeDetailsPage extends React.Component {
             instructions: this.state.instructions,
         };
         // Upload new photo if it was changed/deleted.
-        // TODO: why does it only work to edit recipe if photo exists? (or added and then removed, and saved, and edit again, but only in same session without complete refresh...)
         if (this.state.localPhoto !== this.state.photoDownloadUri) {
             const storageRef = storage.ref("images/" + this.props.user.uid + "/" + this.state.photoPath);
             // Upload new photo to storage, and upload new changes to realtime database.

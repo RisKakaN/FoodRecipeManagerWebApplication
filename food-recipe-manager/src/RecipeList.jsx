@@ -2,6 +2,7 @@ import React from 'react';
 import Firebase from './Firebase.js';
 import PulseLoader from "react-spinners/PulseLoader";
 import RecipeCard from './RecipeCard.jsx'
+import searchIcon from './assets/searchIcon.png';
 import './RecipeList.css';
 
 export default class RecipeList extends React.Component {
@@ -13,9 +14,13 @@ export default class RecipeList extends React.Component {
             dataLoading: true,
             recipes: [],
             dataIsEmpty: false,
+            searchValue: ""
         };
 
         this.isComponentMounted = false;
+
+        this.handleSearchChange = this.handleSearchChange.bind(this);
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -51,6 +56,14 @@ export default class RecipeList extends React.Component {
         });
     }
 
+    handleSearchChange(e) {
+        this.setState({ searchValue: e.target.value });
+    }
+
+    handleSearchSubmit(e) {
+        e.preventDefault();
+    }
+
     render() {
         const recipes = this.state.recipes;
         return (
@@ -65,11 +78,19 @@ export default class RecipeList extends React.Component {
                             />
                         </div>
                         :
-                        <ul>
-                            {Object.keys(recipes).map((recipe) => {
-                                return <RecipeCard key={recipes[recipe].name} recipe={recipes[recipe]} />;
-                            })}
-                        </ul>
+                        <>
+                            <div className="recipeListSearch">
+                                <input className="recipeListSearchInput" type="text" placeholder="Search recipes..." value={this.state.searchValue} onChange={this.handleSearchChange} />
+                                <div className="recipeListSearchButton" onClick={this.handleSearchSubmit}>
+                                    <img src={searchIcon} alt="Search" />
+                                </div>
+                            </div>
+                            <ul>
+                                {Object.keys(recipes).map((recipe) => {
+                                    return <RecipeCard key={recipes[recipe].name} recipe={recipes[recipe]} />;
+                                })}
+                            </ul>
+                        </>
                     : <div className="recipeListEmpty">You currently have no recipes. Please add recipes :)</div>}
             </div>
         );

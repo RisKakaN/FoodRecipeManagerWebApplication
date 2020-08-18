@@ -6,6 +6,7 @@ import NavigationBar from './NavigationBar.jsx'
 import RecipesPage from './RecipesPage.jsx'
 import RecipeDetailsPage from './RecipeDetailsPage.jsx'
 import AddRecipePage from './AddRecipePage.jsx'
+import ProfilePage from './ProfilePage.jsx'
 import NotFoundPage from './NotFoundPage.jsx'
 import './App.css';
 
@@ -42,19 +43,18 @@ export default class App extends React.Component {
             {/* Add other non-user authenticated page routes here. */}
 
             <RequireAuth path="/recipes" user={this.state.user}>
-              <Route
-                path="/recipes"
-                render={({ match: { path } }) => (
-                  <>
-                    <div className="appNavigationBar">
-                      <NavigationBar user={this.state.user} />
-                    </div>
-                    <Route exact path={`${path}/`} render={(props) => <RecipesPage user={this.state.user} {...props} />} />
-                    <Route exact path={`${path}/add`} render={(props) => <AddRecipePage user={this.state.user} {...props} />} />
-                    <Route exact path={`${path}/details/:recipeRouteName`} render={(props) => <RecipeDetailsPage user={this.state.user} {...props} />} />
-                    {/* Only user authenticated page routes here, which are in /recipes. */}
-                  </>
-                )}
+              <div className="appNavigationBar">
+                <NavigationBar user={this.state.user} />
+              </div>
+              <Route path="/recipes" render={({ match: { path } }) => (
+                <>
+                  <Route exact path={`${path}/`} render={(props) => <RecipesPage user={this.state.user} {...props} />} />
+                  <Route exact path={`${path}/add`} render={(props) => <AddRecipePage user={this.state.user} {...props} />} />
+                  <Route exact path={`${path}/details/:recipeRouteName`} render={(props) => <RecipeDetailsPage user={this.state.user} {...props} />} />
+                  <Route exact path={`${path}/profile`} render={(props) => <ProfilePage user={this.state.user} {...props} />} />
+                  {/* Only user authenticated page routes here, which are in /recipes. */}
+                </>
+              )}
               />
             </RequireAuth>
 

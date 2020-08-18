@@ -1,0 +1,6 @@
+.profilePage {
+    width: 100%;
+    height: calc(100% - 50px);
+    color: white;
+    background-color: #373737;
+}
