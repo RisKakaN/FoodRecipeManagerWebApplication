@@ -25,7 +25,7 @@ class RecipeCard extends React.Component {
                     {this.props.recipe.photoDownloadUri ?
                         <img className="recipeCardPhoto" src={this.props.recipe.photoDownloadUri} alt="Not available" />
                         :
-                        <img className="recipeCardPhoto" src={noPhotoAvailablePlaceholder} alt="Not available" />
+                        <img className="recipeCardPhoto" src={noPhotoAvailablePlaceholder} alt="Not available" style={{ width: "190px", height: "190px" }} />
                     }
                 </div>
                 <div className="recipeCardName">

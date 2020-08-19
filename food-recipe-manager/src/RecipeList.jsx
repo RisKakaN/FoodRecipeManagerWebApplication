@@ -21,6 +21,8 @@ export default class RecipeList extends React.Component {
 
         this.handleSearchChange = this.handleSearchChange.bind(this);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
+        this.handleAddNewRecipe = this.handleAddNewRecipe.bind(this);
+        
     }
 
     componentDidMount() {
@@ -65,6 +67,12 @@ export default class RecipeList extends React.Component {
         // Not needed for now...
     }
 
+    handleAddNewRecipe() {
+        this.props.history.push(
+            "/recipes/add/"
+        );
+    }
+
     render() {
         const recipes = this.state.recipes;
         return (
@@ -86,6 +94,8 @@ export default class RecipeList extends React.Component {
                                     <img src={searchIcon} alt="Search" />
                                 </div>
                             </form>
+                            add button here right to search
+                            // filter here below search...
                             <ul>
                                 {Object.keys(recipes).map((recipe) => {
                                     if (recipes[recipe].name.toLowerCase().includes(this.state.searchValue.toLowerCase())) {
