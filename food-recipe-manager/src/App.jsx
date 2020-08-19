@@ -2,6 +2,8 @@ import React from 'react';
 import { Route, Switch, Redirect, BrowserRouter } from "react-router-dom";
 import { auth } from './Firebase.js';
 import LoginPage from './LoginPage.jsx'
+import RegistrationPage from './RegistrationPage.jsx'
+import ResetPasswordPage from './ResetPasswordPage.jsx'
 import NavigationBar from './NavigationBar.jsx'
 import RecipesPage from './RecipesPage.jsx'
 import RecipeDetailsPage from './RecipeDetailsPage.jsx'
@@ -40,6 +42,9 @@ export default class App extends React.Component {
         <BrowserRouter>
           <Switch>
             <Route exact path="/" render={(props) => <LoginPage user={this.state.user} {...props} />} />
+            <Route exact path="/registration" render={(props) => <RegistrationPage user={this.state.user} {...props} />} />
+            <Route exact path="/resetPassword" render={(props) => <ResetPasswordPage user={this.state.user} {...props} />} />
+
             {/* Add other non-user authenticated page routes here. */}
 
             <RequireAuth path="/recipes" user={this.state.user}>
