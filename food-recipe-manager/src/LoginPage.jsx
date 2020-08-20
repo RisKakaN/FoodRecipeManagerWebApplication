@@ -60,7 +60,7 @@ class LoginPage extends React.Component {
 
     handleForgotPasswordClick(e) {
         e.preventDefault();
-        this.props.history.push("/resetPassword");
+        this.props.history.push("/reset-password");
     }
 
     handleRegistrationClick() {
