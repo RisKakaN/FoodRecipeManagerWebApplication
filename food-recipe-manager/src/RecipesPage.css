@@ -2,6 +2,8 @@
     width: 100%;
     height: calc(100% - 50px);
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
     color: white;
     background-color: #373737;
 }

@@ -118,6 +118,32 @@ class RecipesPage extends React.Component {
     render() {
         return (
             <div className="recipesPage">
+                <div className="recipesPageActions">
+                    <div className="recipesPageActionsTop">
+                        <form className="recipesPageSearch">
+                            <div className="recipesPageSearchButton">
+                                <img src={searchIcon} alt="Search" />
+                            </div>
+                            <input className="recipesPageSearchInput" type="text" placeholder="Search recipes..." value={this.state.searchValue} onChange={this.handleSearchChange} />
+                        </form>
+                        <div className="recipesPageAddNewRecipe" onClick={this.handleAddNewRecipe}>
+                            <img src={addRecipeIcon} alt="Search" />
+                                            Add
+                        </div>
+                    </div>
+                    <div className="recipesPageFilterContainer">
+                        <div className="recipesPageFilterLabel">Filters:</div>
+                        <div className="recipesPageFilters">
+                            <Filter stateName={"meatFilterOn"} status={this.state.meatFilterOn} name={"Meat"} handleFilterClick={this.handleFilterClick} />
+                            <Filter stateName={"vegetarianFilterOn"} status={this.state.vegetarianFilterOn} name={"Vegetarian"} handleFilterClick={this.handleFilterClick} />
+                            <Filter stateName={"veganFilterOn"} status={this.state.veganFilterOn} name={"Vegan"} handleFilterClick={this.handleFilterClick} />
+                            <Filter stateName={"breakfastFilterOn"} status={this.state.breakfastFilterOn} name={"Breakfast"} handleFilterClick={this.handleFilterClick} />
+                            <Filter stateName={"lightmealFilterOn"} status={this.state.lightmealFilterOn} name={"Light meal"} handleFilterClick={this.handleFilterClick} />
+                            <Filter stateName={"heavymealFilterOn"} status={this.state.heavymealFilterOn} name={"Heavy meal"} handleFilterClick={this.handleFilterClick} />
+                            <Filter stateName={"dessertFilterOn"} status={this.state.dessertFilterOn} name={"Dessert"} handleFilterClick={this.handleFilterClick} />
+                        </div>
+                    </div>
+                </div>
                 {!this.state.dataIsEmpty ?
                     this.state.dataLoading ?
                         <div className="recipesPageDataLoader">
@@ -128,43 +154,15 @@ class RecipesPage extends React.Component {
                             />
                         </div>
                         :
-                        <>
-                            <div className="recipesPageActions">
-                                <div className="recipesPageActionsTop">
-                                    <form className="recipesPageSearch">
-                                        <div className="recipesPageSearchButton">
-                                            <img src={searchIcon} alt="Search" />
-                                        </div>
-                                        <input className="recipesPageSearchInput" type="text" placeholder="Search recipes..." value={this.state.searchValue} onChange={this.handleSearchChange} />
-                                    </form>
-                                    <div className="recipesPageAddNewRecipe" onClick={this.handleAddNewRecipe}>
-                                        <img src={addRecipeIcon} alt="Search" />
-                                            Add
-                                        </div>
-                                </div>
-                                <div className="recipesPageFilterContainer">
-                                    <div className="recipesPageFilterLabel">Filters:</div>
-                                    <div className="recipesPageFilters">
-                                        <Filter stateName={"meatFilterOn"} status={this.state.meatFilterOn} name={"Meat"} handleFilterClick={this.handleFilterClick} />
-                                        <Filter stateName={"vegetarianFilterOn"} status={this.state.vegetarianFilterOn} name={"Vegetarian"} handleFilterClick={this.handleFilterClick} />
-                                        <Filter stateName={"veganFilterOn"} status={this.state.veganFilterOn} name={"Vegan"} handleFilterClick={this.handleFilterClick} />
-                                        <Filter stateName={"breakfastFilterOn"} status={this.state.breakfastFilterOn} name={"Breakfast"} handleFilterClick={this.handleFilterClick} />
-                                        <Filter stateName={"lightmealFilterOn"} status={this.state.lightmealFilterOn} name={"Light meal"} handleFilterClick={this.handleFilterClick} />
-                                        <Filter stateName={"heavymealFilterOn"} status={this.state.heavymealFilterOn} name={"Heavy meal"} handleFilterClick={this.handleFilterClick} />
-                                        <Filter stateName={"dessertFilterOn"} status={this.state.dessertFilterOn} name={"Dessert"} handleFilterClick={this.handleFilterClick} />
-                                    </div>
-                                </div>
-                            </div>
-                            <ul>
-                                {this.filterRecipes().map((recipe) => {
-                                    if (recipe.name.toLowerCase().includes(this.state.searchValue.toLowerCase())) {
-                                        return <RecipeCard key={recipe.name} recipe={recipe} />;
-                                    } else {
-                                        return null;
-                                    }
-                                })}
-                            </ul>
-                        </>
+                        <ul>
+                            {this.filterRecipes().map((recipe) => {
+                                if (recipe.name.toLowerCase().includes(this.state.searchValue.toLowerCase())) {
+                                    return <RecipeCard key={recipe.name} recipe={recipe} />;
+                                } else {
+                                    return null;
+                                }
+                            })}
+                        </ul>
                     : <div className="recipesPageEmpty">You currently have no recipes. Please add recipes :)</div>}
             </div>
         );
