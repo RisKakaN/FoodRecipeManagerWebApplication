@@ -1,6 +1,121 @@
 .profilePage {
     width: 100%;
     height: calc(100% - 50px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     color: white;
     background-color: #373737;
+}
+
+.profilePageTitle {
+    width: 90%;
+    height: fit-content;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 40px;
+}
+
+.profilePageBox {
+    width: 80%;
+    max-width: 600px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 20px;
+    padding-left: 5%;
+    padding-right: 5%;
+    background-color: #212121;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.profilePageForm {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.profilePageFormPropertyLabel {
+    margin-bottom: 10px;
+}
+
+.profilePageFormProperty {
+    height: 40px;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.profilePageFormPropertyInput {
+    height: 30px;
+    margin-bottom: 10px;
+    font-size: 20px;
+    border-width: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.profilePageFormPropertyErrorLabel {
+    color: red;
+    margin-bottom: 10px;
+}
+
+.profilePageFormPropertyButtonHolder {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.profilePageFormPropertyButton {
+    width: 100px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    border-radius: 5px;
+    border-style: none;
+    cursor: pointer;
+    color: white;
+    background-color: #8e8e8e;
+    font-size: 16px;
+}
+
+.profilePageFormDeleteButtonsHolder {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.profilePageFormDeleteButton {
+    width: 100px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    border-radius: 5px;
+    border-style: none;
+    cursor: pointer;
+    color: white;
+    background-color: red;
+    font-size: 16px;
+}
+
+.profilePageLoader {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

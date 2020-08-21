@@ -1,6 +1,27 @@
 Important fixes:
--
+- make all fonts sizes, consistent.
 
 
 TODO:
-- Profile page.
+- In profile page, add a box at top for showing stats? E.g. number of recipes, meat recipes, etc.... And add more as the features scale.
+
+- Navigation bar should have hamburger menu when the window width gets too small to fit all buttons/text.
+
+- Profile picture
+
+- Make it possible to edit an ingredient's amount while viewing it (NOT EDIT MODE).
+  In this way, if you only have 900g flour, you can make the rest of the ingredients proportional to your "900g of flour",
+  instead of proportional to the portions. So, make it possible to edit the amount while viewing it.
+  And this should not save it. Saving is done through editing the recipe.
+
+- Improve how instructions are being added and visualized. 
+  Maybe introduce steps. Each step is one box of information, and so on.
+
+- Implement Favorites. OR rating? And add corresponding filters.
+
+- Improve filters and add more. E.g. filter by time.
+
+- NEW FEATURES/PAGES?
+    - Shopping list.
+    - Current ingredients at home.
+    - Recipe finder based on ingredients (at home / or not).

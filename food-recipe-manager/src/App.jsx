@@ -10,6 +10,7 @@ import RecipesPage from './RecipesPage.jsx'
 import RecipeDetailsPage from './RecipeDetailsPage.jsx'
 import AddRecipePage from './AddRecipePage.jsx'
 import ProfilePage from './ProfilePage.jsx'
+import GoodByePage from './GoodByePage.jsx'
 import NotFoundPage from './NotFoundPage.jsx'
 import './App.css';
 
@@ -64,6 +65,8 @@ export default class App extends React.Component {
               )}
               />
             </RequireAuth>
+
+            <Route exact path="/good-bye" component={GoodByePage} />
 
             <Route exact path="/404" component={NotFoundPage} />
             <Redirect to={'/404'} />
