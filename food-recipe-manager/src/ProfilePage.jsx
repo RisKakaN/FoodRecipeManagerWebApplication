@@ -1,8 +1,8 @@
-import React from 'react';
-import Firebase, { auth } from './Firebase.js';
+import React from "react";
+import Firebase, { auth } from "./Firebase.js";
 import { withRouter } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
-import './ProfilePage.css';
+import "./ProfilePage.css";
 
 class ProfilePage extends React.Component {
 

@@ -1,5 +1,5 @@
-import Firebase from 'firebase/app';
-import 'firebase/database'
+import Firebase from "firebase/app";
+import "firebase/database"
 import "firebase/auth";
 import "firebase/storage";
 

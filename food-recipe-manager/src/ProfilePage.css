@@ -30,7 +30,6 @@
     padding-right: 5%;
     background-color: #212121;
     border-radius: 5px;
-    font-size: 16px;
 }
 
 .profilePageForm {
@@ -43,31 +42,42 @@
 }
 
 .profilePageFormPropertyLabel {
-    margin-bottom: 10px;
+    width: fit-content;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
 }
 
 .profilePageFormProperty {
+    width: fit-content;
     height: 40px;
     margin-bottom: 10px;
     font-size: 20px;
 }
 
 .profilePageFormPropertyInput {
+    width: calc(100% - 4px);
     height: 30px;
     margin-bottom: 10px;
-    font-size: 20px;
     border-width: 0;
     padding-top: 0;
     padding-bottom: 0;
+    font-size: 20px;
 }
 
 .profilePageFormPropertyErrorLabel {
+    width: fit-content;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
     color: red;
-    margin-bottom: 10px;
 }
 
 .profilePageFormPropertyButtonHolder {
     width: 100%;
+    height: fit-content;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -86,11 +96,12 @@
     cursor: pointer;
     color: white;
     background-color: #8e8e8e;
-    font-size: 16px;
+    font-size: 20px;
 }
 
 .profilePageFormDeleteButtonsHolder {
     width: 100%;
+    height: fit-content;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -109,7 +120,7 @@
     cursor: pointer;
     color: white;
     background-color: red;
-    font-size: 16px;
+    font-size: 20px;
 }
 
 .profilePageLoader {

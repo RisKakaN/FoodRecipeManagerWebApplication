@@ -2,8 +2,8 @@ import React from "react";
 import Firebase, { storage } from "./Firebase.js";
 import PulseLoader from "react-spinners/PulseLoader";
 import { withRouter } from "react-router-dom";
-import { v4 as uuidv4 } from 'uuid';
-import addPhotoPlaceholder from './assets/addPhotoPlaceholder.png';
+import { v4 as uuidv4 } from "uuid";
+import addPhotoPlaceholder from "./assets/addPhotoPlaceholder.png";
 import "./AddRecipePage.css";
 
 class AddRecipePage extends React.Component {
@@ -154,7 +154,7 @@ class AddRecipePage extends React.Component {
 
     instructionsTextareaChange(e) {
         e.target.style.height = "auto";
-        e.target.style.height = e.target.scrollHeight + "px";
+        e.target.style.height = e.target.scrollHeight - 4 + "px";
         this.setState({
             instructions: e.target.value
         });
@@ -399,7 +399,7 @@ class AddRecipePage extends React.Component {
                                         <div className="addRecipePageIngredientsItemAmount">{this.state.ingredients[ingredient].amount}</div>
                                         <div className="addRecipePageIngredientsItemUnit">{this.state.ingredients[ingredient].unit === "N/A" ? null : this.state.ingredients[ingredient].unit}</div>
                                         <div className="addRecipePageIngredientsItemName">{this.state.ingredients[ingredient].name}</div>
-                                        <div className="addRecipePageIngredientsItemRemove"><button onClick={() => this.removeIngredient(this.state.ingredients[ingredient])}>X</button></div>
+                                        <div className="addRecipePageIngredientsItemRemove"><button className="addRecipePageIngredientsItemRemoveButton" onClick={() => this.removeIngredient(this.state.ingredients[ingredient])}>X</button></div>
                                     </li>);
                                 }))}
                             </ul>

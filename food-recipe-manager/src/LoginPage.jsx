@@ -1,8 +1,8 @@
-import React from 'react';
-import { auth } from './Firebase.js';
+import React from "react";
+import { auth } from "./Firebase.js";
 import { Redirect, withRouter } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
-import './LoginPage.css';
+import "./LoginPage.css";
 
 class LoginPage extends React.Component {
 
@@ -69,17 +69,17 @@ class LoginPage extends React.Component {
 
     render() {
         if (this.props.user) {
-            return <Redirect to={'/recipes'} />;
+            return <Redirect to={"/recipes"} />;
         } else {
             return (
                 <div className="loginPage">
                     <div className="loginPageTitle">Food Recipe Manager</div>
                     <div className="loginPageBox">
                         <form className="loginPageForm" onSubmit={this.handleLoginClick}>
-                            <div className="loginPageEmailLabel">Email</div>
-                            <input className="loginPageEmailInput" type="email" name="email" placeholder="Email..." autoComplete="on" onChange={this.handleLoginInputChange} value={this.state.email} required />
-                            <div className="loginPagePasswordLabel">Password</div>
-                            <input className="loginPagePasswordInput" type="password" name="password" placeholder="Password..." autoComplete="on" onChange={this.handleLoginInputChange} value={this.state.password} required />
+                            <div className="loginPageFormLabel">Email</div>
+                            <input className="loginPageFormInput" type="email" name="email" placeholder="Email..." autoComplete="on" onChange={this.handleLoginInputChange} value={this.state.email} required />
+                            <div className="loginPageFormLabel">Password</div>
+                            <input className="loginPageFormInput" type="password" name="password" placeholder="Password..." autoComplete="on" onChange={this.handleLoginInputChange} value={this.state.password} required />
                             <div className="loginPageForgotPassword" onClick={this.handleForgotPasswordClick}>Forgot password?</div>
                             {!this.state.loginLoading ?
                                 <button className="loginPageLoginButton">Login</button>

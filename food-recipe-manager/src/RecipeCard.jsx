@@ -1,7 +1,7 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import noPhotoAvailablePlaceholder from './assets/noPhotoAvailablePlaceholder.png';
-import './RecipeCard.css';
+import React from "react";
+import { withRouter } from "react-router-dom";
+import noPhotoAvailablePlaceholder from "./assets/noPhotoAvailablePlaceholder.png";
+import "./RecipeCard.css";
 
 class RecipeCard extends React.Component {
 
@@ -29,16 +29,22 @@ class RecipeCard extends React.Component {
                     }
                 </div>
                 <div className="recipeCardName">
-                    {recipe.name}
+                    <div className="recipeCardNameValue">{recipe.name}</div>
                 </div>
-                <div className="recipeCardCategory">
-                    Category: {recipe.category}
+                <div className="recipeCardProperty">
+                    <div className="recipeCardPropertyLabel">Category:</div>
+                    <div className="recipeCardPropertyValue">{recipe.category}</div>
                 </div>
-                <div className="recipeCardType">
-                    Type: {recipe.type}
+                <div className="recipeCardProperty">
+                    <div className="recipeCardPropertyLabel">Type:</div>
+                    <div className="recipeCardPropertyValue">{recipe.type}</div>
                 </div>
-                <div className="recipeCardTime">
-                    Time: {recipe.timeHours} hours, {recipe.timeMinutes} mins
+                <div className="recipeCardProperty">
+                    <div className="recipeCardPropertyLabel">Time:</div>
+                    <div className="recipeCardPropertyValue" style={{ marginRight: "5px" }}>{recipe.timeHours}</div>
+                    <div className="recipeCardPropertyValue" style={{ marginRight: "5px" }}>hours, </div>
+                    <div className="recipeCardPropertyValue" style={{ marginRight: "5px" }}>{recipe.timeMinutes}</div>
+                    <div className="recipeCardPropertyValue">mins</div>
                 </div>
             </div>
         );

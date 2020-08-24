@@ -1,18 +1,18 @@
-import React from 'react';
+import React from "react";
 import { Route, Switch, Redirect, BrowserRouter } from "react-router-dom";
-import { auth } from './Firebase.js';
-import LoginPage from './LoginPage.jsx'
-import RegistrationPage from './RegistrationPage.jsx'
-import RegistrationCompletePage from './RegistrationCompletePage.jsx'
-import ResetPasswordPage from './ResetPasswordPage.jsx'
-import NavigationBar from './NavigationBar.jsx'
-import RecipesPage from './RecipesPage.jsx'
-import RecipeDetailsPage from './RecipeDetailsPage.jsx'
-import AddRecipePage from './AddRecipePage.jsx'
-import ProfilePage from './ProfilePage.jsx'
-import GoodByePage from './GoodByePage.jsx'
-import NotFoundPage from './NotFoundPage.jsx'
-import './App.css';
+import { auth } from "./Firebase.js";
+import LoginPage from "./LoginPage.jsx"
+import RegistrationPage from "./RegistrationPage.jsx"
+import RegistrationCompletePage from "./RegistrationCompletePage.jsx"
+import ResetPasswordPage from "./ResetPasswordPage.jsx"
+import NavigationBar from "./NavigationBar.jsx"
+import RecipesPage from "./RecipesPage.jsx"
+import RecipeDetailsPage from "./RecipeDetailsPage.jsx"
+import AddRecipePage from "./AddRecipePage.jsx"
+import ProfilePage from "./ProfilePage.jsx"
+import GoodByePage from "./GoodByePage.jsx"
+import NotFoundPage from "./NotFoundPage.jsx"
+import "./App.css";
 
 export default class App extends React.Component {
 
@@ -21,7 +21,7 @@ export default class App extends React.Component {
 
     // Make use of localStorage to store current user's session, until the user manually logout.
     this.state = {
-      user: JSON.parse(localStorage.getItem('authenticatedUser')),
+      user: JSON.parse(localStorage.getItem("authenticatedUser")),
     };
   }
 
@@ -29,10 +29,10 @@ export default class App extends React.Component {
     // Listener: Check whether a user is logged in.
     auth.onAuthStateChanged((user) => {
       if (user) {
-        localStorage.setItem('authenticatedUser', JSON.stringify(user));
+        localStorage.setItem("authenticatedUser", JSON.stringify(user));
         this.setState({ user: user });
       } else {
-        localStorage.removeItem('authenticatedUser');
+        localStorage.removeItem("authenticatedUser");
         this.setState({ user: null });
       }
     });
@@ -69,7 +69,7 @@ export default class App extends React.Component {
             <Route exact path="/good-bye" component={GoodByePage} />
 
             <Route exact path="/404" component={NotFoundPage} />
-            <Redirect to={'/404'} />
+            <Redirect to={"/404"} />
           </Switch>
         </BrowserRouter>
       </div>
@@ -82,5 +82,5 @@ const RequireAuth = ({ user, children }) => {
   if (user) {
     return children;
   }
-  return <Redirect to={'/'} />;
+  return <Redirect to={"/"} />;
 };

@@ -1,8 +1,8 @@
-import React from 'react';
-import { auth } from './Firebase.js';
+import React from "react";
+import { auth } from "./Firebase.js";
 import { Redirect, withRouter } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
-import './RegistrationPage.css';
+import "./RegistrationPage.css";
 
 class RegistrationPage extends React.Component {
 
@@ -83,19 +83,19 @@ class RegistrationPage extends React.Component {
 
     render() {
         if (this.props.user && !this.state.registrationLoading) {
-            return <Redirect to={'/recipes'} />;
+            return <Redirect to={"/recipes"} />;
         } else {
             return (
                 <div className="registrationPage">
                     <div className="registrationPageTitle">Create your account</div>
                     <div className="registrationPageBox">
                         <form className="registrationPageForm" onSubmit={this.handleRegistrationClick}>
-                            <div className="registrationPageDisplayNameLabel">Name</div>
-                            <input className="registrationPageDisplayNameInput" type="text" name="displayName" placeholder="Name..." autoComplete="on" onChange={this.handleRegistrationInputChange} value={this.state.displayName} minLength="1" maxLength="15" required />
-                            <div className="registrationPageEmailLabel">Email</div>
-                            <input className="registrationPageEmailInput" type="email" name="email" placeholder="Email..." autoComplete="on" onChange={this.handleRegistrationInputChange} value={this.state.email} required />
-                            <div className="registrationPagePasswordLabel">Password</div>
-                            <input className="registrationPagePasswordInput" type="password" name="password" placeholder="Password..." autoComplete="on" onChange={this.handleRegistrationInputChange} value={this.state.password} minLength="6" required />
+                            <div className="registrationPageLabel">Name</div>
+                            <input className="registrationPageInput" type="text" name="displayName" placeholder="Name..." autoComplete="on" onChange={this.handleRegistrationInputChange} value={this.state.displayName} minLength="1" maxLength="15" required />
+                            <div className="registrationPageLabel">Email</div>
+                            <input className="registrationPageInput" type="email" name="email" placeholder="Email..." autoComplete="on" onChange={this.handleRegistrationInputChange} value={this.state.email} required />
+                            <div className="registrationPageLabel">Password</div>
+                            <input className="registrationPageInput" type="password" name="password" placeholder="Password..." autoComplete="on" onChange={this.handleRegistrationInputChange} value={this.state.password} minLength="6" required />
                             {!this.state.registrationLoading ?
                                 <button className="registrationPageRegisterButton">Register</button>
                                 :

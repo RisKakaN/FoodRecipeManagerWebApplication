@@ -1,8 +1,8 @@
-import React from 'react';
-import { auth } from './Firebase.js';
-import { withRouter } from 'react-router-dom';
+import React from "react";
+import { auth } from "./Firebase.js";
+import { withRouter } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
-import './ResetPasswordPage.css';
+import "./ResetPasswordPage.css";
 
 class ResetPasswordPage extends React.Component {
 

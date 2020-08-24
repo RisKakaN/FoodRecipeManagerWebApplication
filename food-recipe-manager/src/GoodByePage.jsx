@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 import { Redirect } from "react-router-dom";
-import './GoodByePage.css';
+import "./GoodByePage.css";
 
 export default class GoodByePage extends React.Component {
 
@@ -14,7 +14,7 @@ export default class GoodByePage extends React.Component {
                 </div>
             );
         } else {
-            return <Redirect to={'/404'} />;
+            return <Redirect to={"/404"} />;
         }
     }
 }

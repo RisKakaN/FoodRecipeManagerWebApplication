@@ -15,12 +15,12 @@
     margin-top: 50px;
     text-align: center;
     font-size: 40px;
-    color: white;
 }
 
 .registrationPageBox {
     width: 80%;
     max-width: 400px;
+    height: fit-content;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -29,7 +29,6 @@
     padding: 5%;
     background-color: #212121;
     border-radius: 5px;
-    font-size: 16px;
 }
 
 .registrationPageForm {
@@ -41,31 +40,22 @@
     background-color: #212121;
 }
 
-.registrationPageDisplayNameLabel {
-    margin-bottom: 10px;
-}
-
-.registrationPageDisplayNameInput {
-    margin-bottom: 20px;
+.registrationPageLabel {
+    width: fit-content;
+    height: 30px;
+    display: flex;
+    align-items: center;
     font-size: 16px;
 }
 
-.registrationPageEmailLabel {
-    margin-bottom: 10px;
-}
-
-.registrationPageEmailInput {
+.registrationPageInput {
+    width: calc(100% - 4px);
+    height: 30px;
     margin-bottom: 20px;
-    font-size: 16px;
-}
-
-.registrationPagePasswordLabel {
-    margin-bottom: 10px;
-}
-
-.registrationPagePasswordInput {
-    margin-bottom: 20px;
-    font-size: 16px;
+    font-size: 20px;
+    border-width: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .registrationPageRegisterButton {
@@ -74,19 +64,23 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 10px;
     border-radius: 5px;
     border-style: none;
     cursor: pointer;
     color: white;
     background-color: #8e8e8e;
-    font-size: 16px;
+    font-size: 20px;
 }
 
 .registrationPageErrorMessage {
+    width: fit-content;
+    height: fit-content;
     display: flex;
     justify-content: center;
     margin-top: 10px;
     color: red;
+    font-size: 16px;
 }
 
 .registrationPageRegistrationLoader {
@@ -98,16 +92,23 @@
 }
 
 .registrationPageAlreadyRegistered {
+    width: fit-content;
+    height: fit-content;
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-self: center;
     margin-top: 20px;
+    font-size: 16px;
 }
 
 .registrationPageAlreadyRegisteredButton {
+    width: fit-content;
+    height: fit-content;
     margin-left: 5px;
     cursor: pointer;
     color: #0366d6;
+    font-size: 16px;
 }
 
 .registrationPageFooter {
@@ -119,5 +120,5 @@
     align-items: center;
     justify-content: center;
     background-color: #212121;
-    color: white;
+    font-size: 20px;
 }

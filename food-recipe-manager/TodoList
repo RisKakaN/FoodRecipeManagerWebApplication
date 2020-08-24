@@ -1,9 +1,26 @@
-Important fixes:
-- make all fonts sizes, consistent.
+========== Design 
+font sizes:
+    titles: 40px
+    card title: 24px
+    labels: 16px
+    inputs: 20px
+    buttons: 20px
+    info: 20px
+    search box: 20px
 
+colors:
+    text: white
+    primary background: #373737
+    secondary background: #8e8e8e
+    error: red
+    loaders: #123abc
+
+================================================================================
 
 TODO:
 - In profile page, add a box at top for showing stats? E.g. number of recipes, meat recipes, etc.... And add more as the features scale.
+
+- Make a proper looking 404 page...
 
 - Navigation bar should have hamburger menu when the window width gets too small to fit all buttons/text.
 

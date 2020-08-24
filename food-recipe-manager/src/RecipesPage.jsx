@@ -1,11 +1,11 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
+import React from "react";
+import { withRouter } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
-import addRecipeIcon from './assets/addRecipeIcon.png';
-import searchIcon from './assets/searchIcon.png';
-import Firebase from './Firebase.js';
-import RecipeCard from './RecipeCard.jsx';
-import './RecipesPage.css';
+import addRecipeIcon from "./assets/addRecipeIcon.png";
+import searchIcon from "./assets/searchIcon.png";
+import Firebase from "./Firebase.js";
+import RecipeCard from "./RecipeCard.jsx";
+import "./RecipesPage.css";
 
 class RecipesPage extends React.Component {
 
@@ -51,8 +51,8 @@ class RecipesPage extends React.Component {
     }
 
     fetchDataFromFirebase() {
-        const recipesRef = Firebase.database().ref('recipes/' + this.props.user.uid);
-        recipesRef.once('value', (snapshot) => {
+        const recipesRef = Firebase.database().ref("recipes/" + this.props.user.uid);
+        recipesRef.once("value", (snapshot) => {
             if (this.isComponentMounted) {
                 if (snapshot.val()) {
                     this.setState({
@@ -154,7 +154,7 @@ class RecipesPage extends React.Component {
                             />
                         </div>
                         :
-                        <ul>
+                        <ul className="recipesPageList">
                             {this.filterRecipes().map((recipe) => {
                                 if (recipe.name.toLowerCase().includes(this.state.searchValue.toLowerCase())) {
                                     return <RecipeCard key={recipe.name} recipe={recipe} />;

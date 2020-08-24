@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 import Firebase, { storage } from "./Firebase.js";
 import PulseLoader from "react-spinners/PulseLoader";
 import { withRouter } from "react-router-dom";
-import { v4 as uuidv4 } from 'uuid';
-import addPhotoPlaceholder from './assets/addPhotoPlaceholder.png';
-import noPhotoAvailablePlaceholder from './assets/noPhotoAvailablePlaceholder.png';
-import './RecipeDetailsPage.css';
+import { v4 as uuidv4 } from "uuid";
+import addPhotoPlaceholder from "./assets/addPhotoPlaceholder.png";
+import noPhotoAvailablePlaceholder from "./assets/noPhotoAvailablePlaceholder.png";
+import "./RecipeDetailsPage.css";
 
 class RecipeDetailsPage extends React.Component {
 
@@ -190,7 +190,7 @@ class RecipeDetailsPage extends React.Component {
 
     instructionsTextareaChange(e) {
         e.target.style.height = "auto";
-        e.target.style.height = e.target.scrollHeight + "px";
+        e.target.style.height = e.target.scrollHeight - 4 + "px";
         this.setState({
             instructions: e.target.value
         });
@@ -227,7 +227,7 @@ class RecipeDetailsPage extends React.Component {
                 photoPreview: recipe.photoDownloadUri, // Set to handle photo displaying.
             });
         } else {
-            Firebase.database().ref('recipes/' + this.props.user.uid).orderByChild('name').equalTo(this.props.match.params.recipeRouteName).once('value', (snapshot) => {
+            Firebase.database().ref("recipes/" + this.props.user.uid).orderByChild("name").equalTo(this.props.match.params.recipeRouteName).once("value", (snapshot) => {
                 if (snapshot.val() && this.isComponentMounted) {
                     this.dataLoading = false;
                     const recipe = Object.values(snapshot.val())[0];
@@ -690,7 +690,7 @@ class RecipeDetailsPage extends React.Component {
                                                         <div className="recipeDetailsPageIngredientsItemAmount">{this.state.ingredients[ingredient].amount}</div>
                                                         <div className="recipeDetailsPageIngredientsItemUnit">{this.state.ingredients[ingredient].unit === "N/A" ? null : this.state.ingredients[ingredient].unit}</div>
                                                         <div className="recipeDetailsPageIngredientsItemName">{this.state.ingredients[ingredient].name}</div>
-                                                        <div className="recipeDetailsPageIngredientsItemRemove"><button onClick={() => this.removeIngredient(this.state.ingredients[ingredient])}>X</button></div>
+                                                        <div className="recipeDetailsPageIngredientsItemRemove"><button className="recipeDetailsPageIngredientsItemRemoveButton" onClick={() => this.removeIngredient(this.state.ingredients[ingredient])}>X</button></div>
                                                     </li>);
                                                 }))}
                                             </ul>
@@ -726,23 +726,20 @@ class RecipeDetailsPage extends React.Component {
                             {!this.state.editModeActive ?
                                 <button className="recipeDetailsPageEditRecipeButton" onClick={this.activateEditMode}>Edit recipe</button>
                                 :
-                                <div className="recipeDetailsPageEditRecipeModeButtons">
-                                    {this.state.recipeChangesUploading ?
-                                        <div className="recipeDetailsPageUploadingEditLoader">
-                                            <PulseLoader
-                                                size={15}
-                                                color={"#123abc"}
-                                                loading={this.state.recipeChangesUploading}
-                                            />
-                                        </div>
-                                        :
-                                        <>
-                                            <button className="recipeDetailsPageEditRecipeSaveButton" >Save</button>
-                                            <button className="recipeDetailsPageEditRecipeSaveButton" onClick={this.cancelEditMode}>Cancel</button>
-                                            <button className="recipeDetailsPageEditRecipeDeleteButton" onClick={this.deleteRecipe}>Delete</button>
-                                        </>
-                                    }
-                                </div>
+                                this.state.recipeChangesUploading ?
+                                    <div className="recipeDetailsPageUploadingEditLoader">
+                                        <PulseLoader
+                                            size={15}
+                                            color={"#123abc"}
+                                            loading={this.state.recipeChangesUploading}
+                                        />
+                                    </div>
+                                    :
+                                    <div className="recipeDetailsPageEditRecipeModeButtons">
+                                        <button className="recipeDetailsPageEditRecipeButton" >Save</button>
+                                        <button className="recipeDetailsPageEditRecipeButton" onClick={this.cancelEditMode}>Cancel</button>
+                                        <button className="recipeDetailsPageEditRecipeButton" onClick={this.deleteRecipe}>Delete</button>
+                                    </div>
                             }
                         </div>
                     </>

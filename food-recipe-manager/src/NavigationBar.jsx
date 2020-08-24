@@ -1,8 +1,8 @@
-import React from 'react';
-import { auth } from './Firebase.js';
-import { withRouter } from 'react-router-dom';
-import navigationBarLogo from './assets/navigationBarLogo.png';
-import './NavigationBar.css';
+import React from "react";
+import { auth } from "./Firebase.js";
+import { withRouter } from "react-router-dom";
+import navigationBarLogo from "./assets/navigationBarLogo.png";
+import "./NavigationBar.css";
 
 class NavigationBar extends React.Component {
 
@@ -25,7 +25,7 @@ class NavigationBar extends React.Component {
     handleLogout() {
         auth.signOut()
             .then(() => {
-                console.log('Signed out')
+                console.log("Signed out")
             });
     }
 

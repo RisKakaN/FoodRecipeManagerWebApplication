@@ -21,6 +21,7 @@
     flex-flow: row wrap;
     justify-content: center;
     margin-bottom: 20px;
+    border-radius: 5px;
     background-color: #212121;
 }
 
@@ -69,6 +70,7 @@ input[type="file"] {
     display: flex;
     align-items: center;
     color: red;
+    font-size: 16px;
 }
 
 .addRecipePagePhotoRemove {
@@ -81,7 +83,16 @@ input[type="file"] {
 .addRecipePagePhotoRemoveButton {
     width: fit-content;
     height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-top: 10px;
+    border-radius: 5px;
+    border-style: none;
+    cursor: pointer;
+    color: white;
+    background-color: #8e8e8e;
+    font-size: 20px;
 }
 
 /* ============================== Top Right ============================== */
@@ -103,13 +114,15 @@ input[type="file"] {
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
+    font-size: 20px;
 }
 
 .addRecipePageNameLabel {
-    width: 100%;
+    width: fit-content;
     height: 30px;
     display: flex;
     align-items: center;
+    font-size: 16px;
 }
 
 .addRecipePageNameInput {
@@ -119,13 +132,15 @@ input[type="file"] {
     border-width: 0;
     padding-top: 0;
     padding-bottom: 0;
+    font-size: 20px;
 }
 
 .addRecipePageNameErrorLabel {
-    width: 100%;
+    width: fit-content;
     height: 30px;
     display: flex;
     align-items: center;
+    font-size: 16px;
     color: red;
 }
 
@@ -144,36 +159,42 @@ input[type="file"] {
     width: calc(50% - 10px);
     height: 60px;
     margin-right: 20px;
+    font-size: 20px;
 }
 
 .addRecipePageCategoryLabel {
-    width: 100%;
+    width: fit-content;
     height: 30px;
     display: flex;
     align-items: center;
+    font-size: 16px;
 }
 
 .addRecipePageCategorySelector {
     width: 100%;
     height: 30px;
+    font-size: 20px;
 }
 
 /* ============================== Type ============================== */
 .addRecipePageType {
     width: calc(50% - 10px);
     height: 60px;
+    font-size: 20px;
 }
 
 .addRecipePageTypeLabel {
-    width: 100%;
+    width: fit-content;
     height: 30px;
     display: flex;
     align-items: center;
+    font-size: 16px;
 }
 
 .addRecipePageTypeSelector {
     width: 100%;
     height: 30px;
+    font-size: 20px;
 }
 
 /* ============================== Time ============================== */
@@ -182,14 +203,14 @@ input[type="file"] {
     height: fit-content;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
 .addRecipePageTimeLabel {
-    width: 100%;
+    width: fit-content;
     height: 30px;
     display: flex;
     align-items: center;
+    font-size: 16px;
 }
 
 .addRecipePageTimeInput {
@@ -207,14 +228,16 @@ input[type="file"] {
     border-width: 0;
     padding-top: 0;
     padding-bottom: 0;
+    font-size: 20px;
 }
 
 .addRecipePageTimeHoursLabel {
     width: fit-content;
     height: 30px;
-    margin-right: 5px;
     display: flex;
     align-items: center;
+    margin-right: 5px;
+    font-size: 20px;
 }
 
 .addRecipePageTimeMinutesInput {
@@ -224,6 +247,7 @@ input[type="file"] {
     border-width: 0;
     padding-top: 0;
     padding-bottom: 0;
+    font-size: 20px;
 }
 
 .addRecipePageTimeMinutesLabel {
@@ -231,6 +255,7 @@ input[type="file"] {
     height: 30px;
     display: flex;
     align-items: center;
+    font-size: 20px;
 }
 
 /* ============================== Bottom ============================== */
@@ -241,6 +266,7 @@ input[type="file"] {
     flex-flow: row wrap;
     justify-content: center;
     margin-bottom: 20px;
+    border-radius: 5px;
     background-color: #212121;
 }
 
@@ -264,6 +290,7 @@ input[type="file"] {
     flex-flow: row wrap;
     align-items: center;
     margin-bottom: 10px;
+    font-size: 20px;
 }
 
 .addRecipePagePortionsLabel {
@@ -271,25 +298,38 @@ input[type="file"] {
     height: 30px;
     display: flex;
     align-items: center;
+    font-size: 16px;
     margin-right: 20px;
 }
 
 .addRecipePagePortionsDecrementButton {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-right: 10px;
+    border-radius: 5px;
+    border-style: none;
+    cursor: pointer;
+    color: white;
+    background-color: #8e8e8e;
+    font-size: 20px;
 }
 
 .addRecipePagePortionsIncrementButton {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-left: 10px;
+    border-radius: 5px;
+    border-style: none;
+    cursor: pointer;
+    color: white;
+    background-color: #8e8e8e;
+    font-size: 20px;
 }
 
 /* ============================== Ingredients ============================== */
@@ -305,6 +345,7 @@ input[type="file"] {
     height: 30px;
     display: flex;
     align-items: center;
+    font-size: 16px;
 }
 
 .addRecipePageIngredientsInput {
@@ -317,12 +358,13 @@ input[type="file"] {
 }
 
 .addRecipePageIngredientsInputAmount {
-    width: 20%;
+    width: calc(20% - 4px);
     height: 100%;
     border-width: 0;
     padding-top: 0;
     padding-bottom: 0;
     margin-right: 1%;
+    font-size: 16px;
 }
 
 .addRecipePageIngredientsInputUnitSelector {
@@ -332,10 +374,11 @@ input[type="file"] {
     padding-top: 0;
     padding-bottom: 0;
     margin-right: 1%;
+    font-size: 16px;
 }
 
 .addRecipePageIngredientsInputName {
-    width: 35%;
+    width: calc(35% - 4px);
     height: 100%;
     border-width: 0;
     padding-top: 0;
@@ -347,6 +390,15 @@ input[type="file"] {
     width: calc(27% - 8px);
     height: 100%;
     padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    border-style: none;
+    cursor: pointer;
+    color: white;
+    background-color: #8e8e8e;
+    font-size: 20px;
 }
 
 .addRecipePageIngredientsList {
@@ -362,6 +414,8 @@ input[type="file"] {
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-bottom: 5px;
+    font-size: 20px;
 }
 
 .addRecipePageIngredientsItemAmount {
@@ -399,11 +453,26 @@ input[type="file"] {
     justify-content: center;
 }
 
-.addRecipePageIngredientsErrorLabel {
-    width: 100%;
+.addRecipePageIngredientsItemRemoveButton {
+    width: 30px;
     height: 30px;
     display: flex;
     align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    border-style: none;
+    cursor: pointer;
+    color: white;
+    background-color: #8e8e8e;
+    font-size: 20px;
+}
+
+.addRecipePageIngredientsErrorLabel {
+    width: fit-content;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
     color: red;
 }
 
@@ -427,6 +496,7 @@ input[type="file"] {
     height: fit-content;
     display: flex;
     flex-direction: column;
+    font-size: 20px;
 }
 
 .addRecipePageInstructionsLabel {
@@ -434,13 +504,16 @@ input[type="file"] {
     height: 30px;
     display: flex;
     align-items: center;
+    font-size: 16px;
 }
 
 .addRecipePageInstructionsInput {
-    min-height: 300px;
-    height: fit-content;
+    width: calc(100% - 4px);
+    min-height: calc(300px - 4px);
+    height: calc(fit-content - 4px);
     border-width: 0;
     resize: none;
+    font-size: 20px;
 }
 
 /* ============================== Add button ============================== */
@@ -455,15 +528,21 @@ input[type="file"] {
 
 .addRecipePageAddNewRecipeButton {
     width: 200px;
-    height: 50px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 5px;
+    border-style: none;
+    cursor: pointer;
+    color: white;
+    background-color: #8e8e8e;
+    font-size: 20px;
 }
 
 .addRecipePageUploadingLoader {
     width: 100%;
-    height: 50px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -472,9 +551,10 @@ input[type="file"] {
 
 .addRecipePageAddNewRecipeErrorLabel {
     width: fit-content;
-    height: fit-content;
-    margin-bottom: 10px;
+    height: 30px;
     display: flex;
     align-items: center;
+    font-size: 16px;
+    margin-bottom: 10px;
     color: red;
 }

@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 import { Redirect, withRouter } from "react-router-dom";
-import './RegistrationCompletePage.css';
+import "./RegistrationCompletePage.css";
 
 class RegistrationCompletePage extends React.Component {
 
@@ -17,7 +17,7 @@ class RegistrationCompletePage extends React.Component {
     render() {
         const pageAccessible = true ? ((typeof this.props.location.state !== "undefined") && this.props.location.state.registrationComplete) : false;
         if (this.props.user && !pageAccessible) {
-            return <Redirect to={'/recipes'} />;
+            return <Redirect to={"/recipes"} />;
         } else if (pageAccessible) {
             return (
                 <div className="registrationCompletePage">
@@ -29,7 +29,7 @@ class RegistrationCompletePage extends React.Component {
                 </div>
             );
         } else {
-            return <Redirect to={'/'} />;
+            return <Redirect to={"/"} />;
         }
     }
 }
