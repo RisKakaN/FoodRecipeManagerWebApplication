@@ -1,7 +1,7 @@
 .recipeDetailsPage {
-    width: 96%;
+    width: 100%;
     /* Base subtraction of height should be 50px due to navigation bar being 50px high.  */
-    height: calc(100% - 90px);
+    height: calc(100% - 50px);
     display: flex;
     flex-direction: column;
     overflow-y: auto;

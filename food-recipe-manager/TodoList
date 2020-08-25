@@ -1,4 +1,4 @@
-========== Design 
+============================================== Design ==============================================
 font sizes:
     titles: 40px
     card title: 24px
@@ -15,13 +15,20 @@ colors:
     error: red
     loaders: #123abc
 
-================================================================================
 
-TODO:
+
+====================== Important annotations in code, waiting to be resolved ======================
+!TODO
+!WARNING
+!ERROR
+
+
+
+=============================================== TODO ===============================================
+
+- fix login design...
 
 - In profile page, add a box at top for showing stats? E.g. number of recipes, meat recipes, etc.... And add more as the features scale.
-
-- Navigation bar should have hamburger menu when the window width gets too small to fit all buttons/text.
 
 - Profile picture
 

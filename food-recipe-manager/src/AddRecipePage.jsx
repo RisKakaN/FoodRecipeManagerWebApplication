@@ -189,7 +189,7 @@ class AddRecipePage extends React.Component {
                 });
             }
         }).catch((error) => {
-            //TODO: What to do if the uploaded photo that should be deleted due to database upload failure, cannot be deleted?
+            // !TODO: What to do if the uploaded photo that should be deleted due to database upload failure, cannot be deleted?
         });
     }
 
