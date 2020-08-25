@@ -44,6 +44,8 @@ class RecipeDetailsPage extends React.Component {
             dynamicIngredientsMultiplier: 1, // = (dynamicPortions / this.state.portions)
         };
 
+        this.instructionsTextAreaRef = React.createRef();
+
         this.dataLoading = true;
         this.isComponentMounted = false;
 
@@ -188,11 +190,11 @@ class RecipeDetailsPage extends React.Component {
         }
     }
 
-    instructionsTextareaChange(e) {
-        e.target.style.height = "auto";
-        e.target.style.height = e.target.scrollHeight - 4 + "px";
+    instructionsTextareaChange(target) {
+        target.style.height = "auto";
+        target.style.height = target.scrollHeight - 4 + "px";
         this.setState({
-            instructions: e.target.value
+            instructions: target.value
         });
     }
 
@@ -400,6 +402,8 @@ class RecipeDetailsPage extends React.Component {
             portions: currentRecipe.portions,
             ingredients: currentRecipe.ingredients,
             instructions: currentRecipe.instructions
+        }, () => {
+            this.instructionsTextareaChange(this.instructionsTextAreaRef.current)
         });
     }
 
@@ -709,9 +713,9 @@ class RecipeDetailsPage extends React.Component {
                                 <div className="recipeDetailsPageInstructions">
                                     <div className="recipeDetailsPageInstructionsLabel">Instructions:</div>
                                     {!this.state.editModeActive ?
-                                        currentRecipe.instructions
+                                        <div className="recipeDetailsPageInstructionsText">{currentRecipe.instructions}</div>
                                         :
-                                        <textarea className="recipeDetailsPageInstructionsInput" name="instructions" onChange={this.instructionsTextareaChange} value={this.state.instructions} placeholder="Add instructions" required />
+                                        <textarea className="recipeDetailsPageInstructionsInput" name="instructions" onChange={(e) => this.instructionsTextareaChange(e.target)} ref={this.instructionsTextAreaRef} value={this.state.instructions} placeholder="Add instructions" required />
                                     }
                                 </div>
                             </div>

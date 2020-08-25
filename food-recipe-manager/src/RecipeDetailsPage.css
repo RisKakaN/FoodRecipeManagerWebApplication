@@ -508,7 +508,6 @@ input[type="file"] {
 /* ============================== Bottom Right ============================== */
 .recipeDetailsPageBottomRight {
     width: 600px;
-    min-height: fit-content;
     height: fit-content;
     display: flex;
     flex-direction: column;
@@ -525,9 +524,6 @@ input[type="file"] {
     height: fit-content;
     display: flex;
     flex-direction: column;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    font-size: 20px;
 }
 
 .recipeDetailsPageInstructionsLabel {
@@ -536,6 +532,15 @@ input[type="file"] {
     display: flex;
     align-items: center;
     font-size: 16px;
+}
+
+.recipeDetailsPageInstructionsText {
+    width: 100%;
+    height: fit-content;
+    hyphens: auto;
+    word-break: break-word;
+    white-space: pre-wrap;
+    font-size: 20px;
 }
 
 .recipeDetailsPageInstructionsInput {
