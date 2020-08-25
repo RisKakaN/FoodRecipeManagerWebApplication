@@ -9,7 +9,7 @@ export default class GoodByePage extends React.Component {
         if (pageAccessible) {
             return (
                 <div className="goodByePage">
-                    <h1>Good bye...   ;(</h1>
+                    <h1>Good bye!<span style={{ marginLeft: "20px" }}>:(</span></h1>
                     <h4>Sad to see you leave us!</h4>
                 </div>
             );

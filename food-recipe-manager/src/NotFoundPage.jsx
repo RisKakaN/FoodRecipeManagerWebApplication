@@ -5,7 +5,8 @@ export default class NotFoundPage extends React.Component {
     render() {
         return (
             <div className="notFoundPage">
-                404 not found!
+                <h1>Oops!<span style={{ marginLeft: "20px" }}>:(</span></h1>
+                <h4>The page could not be found</h4>
             </div>
         );
     }
