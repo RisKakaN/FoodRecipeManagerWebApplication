@@ -21,8 +21,8 @@ class RegistrationCompletePage extends React.Component {
         } else if (pageAccessible) {
             return (
                 <div className="registrationCompletePage">
+                    <div className="registrationCompletePageTitle">Registration complete</div>
                     <div className="registrationCompletePageBox">
-                        <div className="registrationCompletePageBoxHeader">Registration complete</div>
                         <div className="registrationCompletePageBoxInfo">You will now be able to store your food recipes online! And don't forget to verify your email for your best user experience.</div>
                         <button className="registrationCompletePageBoxButton" onClick={this.handleProceedClick}>Proceed to login</button>
                     </div>

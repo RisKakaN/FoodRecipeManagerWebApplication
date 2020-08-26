@@ -39,20 +39,23 @@
 }
 
 /* ============================== Photo ============================== */
+.addRecipePagePhotoHolder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+input[type="file"] {
+    display: none;
+}
+
 .addRecipePagePhoto {
     width: 100%;
     max-width: 400px;
     height: 100%;
     max-height: 400px;
     cursor: pointer;
-}
-
-.addRecipePagePhotoHolder {
-    cursor: pointer;
-}
-
-input[type="file"] {
-    display: none;
 }
 
 .addRecipePagePhotoPlaceholderImage {
@@ -65,12 +68,17 @@ input[type="file"] {
 }
 
 .addRecipePagePhotoErrorLabel {
-    width: fit-content;
-    height: 30px;
+    width: 100%;
+    height: fit-content;
     display: flex;
     align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
     color: red;
     font-size: 16px;
+    hyphens: auto;
+    word-break: break-word;
+    white-space: pre-wrap;
 }
 
 .addRecipePagePhotoRemove {
@@ -110,11 +118,10 @@ input[type="file"] {
 /* ============================== Name ============================== */
 .addRecipePageName {
     width: 100%;
-    height: 90px;
+    height: fit-content;
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-    font-size: 20px;
 }
 
 .addRecipePageNameLabel {
@@ -136,12 +143,17 @@ input[type="file"] {
 }
 
 .addRecipePageNameErrorLabel {
-    width: fit-content;
-    height: 30px;
+    width: 100%;
+    height: fit-content;
     display: flex;
     align-items: center;
-    font-size: 16px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     color: red;
+    font-size: 16px;
+    hyphens: auto;
+    word-break: break-word;
+    white-space: pre-wrap;
 }
 
 /* ============================== Category and Type ============================== */
@@ -468,12 +480,17 @@ input[type="file"] {
 }
 
 .addRecipePageIngredientsErrorLabel {
-    width: fit-content;
-    height: 30px;
+    width: 100%;
+    height: fit-content;
     display: flex;
     align-items: center;
-    font-size: 16px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     color: red;
+    font-size: 16px;
+    hyphens: auto;
+    word-break: break-word;
+    white-space: pre-wrap;
 }
 
 /* ============================== Bottom Right ============================== */
@@ -550,11 +567,16 @@ input[type="file"] {
 }
 
 .addRecipePageAddNewRecipeErrorLabel {
-    width: fit-content;
-    height: 30px;
+    width: 100%;
+    height: fit-content;
     display: flex;
     align-items: center;
-    font-size: 16px;
-    margin-bottom: 10px;
+    justify-content: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
     color: red;
+    font-size: 16px;
+    hyphens: auto;
+    word-break: break-word;
+    white-space: pre-wrap;
 }

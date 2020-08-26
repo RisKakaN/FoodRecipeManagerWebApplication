@@ -57,7 +57,7 @@ class NavigationBar extends React.Component {
                         </NavDropdown> */}
                     </Nav>
                     <Nav>
-                        <Nav.Link eventKey="2" onClick={this.handleProfileClick} className="px-3"><div style={{ maxWidth: "250px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>qweqweqweqweqwjakshfjhaskfjhasjkfhkjasfhaskjfhkajshfkaeqweqweqweq{this.props.user.displayName}</div></Nav.Link>
+                        <Nav.Link eventKey="2" onClick={this.handleProfileClick} className="px-3"><div style={{ maxWidth: "250px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{this.props.user.displayName}</div></Nav.Link>
                         <Nav.Link onClick={this.handleLogout} className="px-3">Logout</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>

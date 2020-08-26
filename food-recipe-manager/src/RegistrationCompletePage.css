@@ -9,9 +9,17 @@
     background-color: #373737;
 }
 
+.registrationCompletePageTitle {
+    width: 90%;
+    height: fit-content;
+    margin-top: 50px;
+    text-align: center;
+    font-size: 40px;
+}
+
 .registrationCompletePageBox {
-    width: 80%;
-    max-width: 400px;
+    width: 90%;
+    max-width: 600px;
     height: fit-content;
     display: flex;
     flex-direction: column;
@@ -25,15 +33,6 @@
     overflow-wrap: break-word;
     word-wrap: break-word;
     hyphens: auto;
-}
-
-.registrationCompletePageBoxHeader {
-    width: fit-content;
-    height: fit-content;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-    font-size: 40px;
 }
 
 .registrationCompletePageBoxInfo {

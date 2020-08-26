@@ -48,20 +48,23 @@
 }
 
 /* ============================== Photo ============================== */
+.recipeDetailsPagePhotoHolder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+input[type="file"] {
+    display: none;
+}
+
 .recipeDetailsPagePhoto {
     width: 100%;
     max-width: 400px;
     height: 100%;
     max-height: 400px;
     cursor: pointer;
-}
-
-.recipeDetailsPagePhotoHolder {
-    cursor: pointer;
-}
-
-input[type="file"] {
-    display: none;
 }
 
 .recipeDetailsPagePhotoPlaceholderImage {
@@ -74,12 +77,17 @@ input[type="file"] {
 }
 
 .recipeDetailsPagePhotoErrorLabel {
-    width: fit-content;
-    height: 30px;
+    width: 100%;
+    height: fit-content;
     display: flex;
     align-items: center;
-    font-size: 16px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     color: red;
+    font-size: 16px;
+    hyphens: auto;
+    word-break: break-word;
+    white-space: pre-wrap;
 }
 
 .recipeDetailsPagePhotoRemove {
@@ -145,12 +153,17 @@ input[type="file"] {
 }
 
 .recipeDetailsPageNameErrorLabel {
-    width: fit-content;
-    height: 30px;
+    width: 100%;
+    height: fit-content;
     display: flex;
     align-items: center;
-    font-size: 16px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     color: red;
+    font-size: 16px;
+    hyphens: auto;
+    word-break: break-word;
+    white-space: pre-wrap;
 }
 
 /* ============================== Category and Type ============================== */
@@ -497,12 +510,17 @@ input[type="file"] {
 }
 
 .recipeDetailsPageIngredientsErrorLabel {
-    width: fit-content;
-    height: 30px;
+    width: 100%;
+    height: fit-content;
     display: flex;
     align-items: center;
-    font-size: 16px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     color: red;
+    font-size: 16px;
+    hyphens: auto;
+    word-break: break-word;
+    white-space: pre-wrap;
 }
 
 /* ============================== Bottom Right ============================== */
@@ -598,11 +616,16 @@ input[type="file"] {
 }
 
 .recipeDetailsPageEditRecipeErrorLabel {
-    width: fit-content;
-    height: 30px;
+    width: 100%;
+    height: fit-content;
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    justify-content: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
     color: red;
     font-size: 16px;
+    hyphens: auto;
+    word-break: break-word;
+    white-space: pre-wrap;
 }

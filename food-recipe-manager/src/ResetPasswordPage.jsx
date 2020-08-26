@@ -64,27 +64,31 @@ class ResetPasswordPage extends React.Component {
         return (
             <div className="resetPasswordPage">
                 {this.state.resetDone ?
-                    <div className="resetPasswordPageBox">
-                        <div className="resetPasswordPageBoxHeader">Reset done!</div>
-                        <div className="resetPasswordPageBoxInfo">Please check your email.</div>
-                        <button className="resetPasswordPageBoxButton" onClick={this.handleReturnClick}>Go back to Login</button>
-                    </div>
+                    <>
+                        <div className="resetPasswordPageTitle">Reset done!</div>
+                        <div className="resetPasswordPageBox">
+                            <div className="resetPasswordPageBoxInfo">Please check your email to reset your password.</div>
+                            <button className="resetPasswordPageBoxButton" onClick={this.handleReturnClick}>Go back to Login</button>
+                        </div>
+                    </>
                     :
-                    <form className="resetPasswordPageBox" onSubmit={this.handleResetClick}>
-                        <div className="resetPasswordPageBoxHeader">Reset password</div>
-                        <div className="resetPasswordPageBoxInfo">Please enter your email and proceed. Then follow the directions that will be sent to your email.</div>
-                        <input className="resetPasswordPageEmailInput" type="email" name="email" placeholder="Email..." autoComplete="on" onChange={this.handleEmailInputChange} value={this.state.email} required />
-                        {!this.state.resetLoading ?
-                            <button className="resetPasswordPageBoxButton">Reset</button>
-                            :
-                            <div className="resetPasswordPageResetLoader">
-                                <PulseLoader
-                                    color={"#123abc"}
-                                    loading={this.state.resetLoading}
-                                />
-                            </div>}
-                        {this.state.resetFailMessage && <div className="resetPasswordPageErrorMessage">{this.state.resetFailMessage}</div>}
-                    </form>
+                    <>
+                        <div className="resetPasswordPageTitle">Reset password</div>
+                        <form className="resetPasswordPageBox" onSubmit={this.handleResetClick}>
+                            <div className="resetPasswordPageBoxInfo">Please enter your email and proceed. Then follow the directions that will be sent to your email.</div>
+                            <input className="resetPasswordPageEmailInput" type="email" name="email" placeholder="Email..." autoComplete="on" onChange={this.handleEmailInputChange} value={this.state.email} required />
+                            {!this.state.resetLoading ?
+                                <button className="resetPasswordPageBoxButton">Reset</button>
+                                :
+                                <div className="resetPasswordPageResetLoader">
+                                    <PulseLoader
+                                        color={"#123abc"}
+                                        loading={this.state.resetLoading}
+                                    />
+                                </div>}
+                            {this.state.resetFailMessage && <div className="resetPasswordPageErrorMessage">{this.state.resetFailMessage}</div>}
+                        </form>
+                    </>
                 }
             </div>
         );

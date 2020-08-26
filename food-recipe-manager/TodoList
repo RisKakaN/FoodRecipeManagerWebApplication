@@ -10,8 +10,9 @@ font sizes:
 
 colors:
     text: white
-    primary background: #373737
-    secondary background: #8e8e8e
+    dark background: #212121
+    light dark background: #373737
+    gray background: #8e8e8e
     error: red
     loaders: #123abc
 
@@ -25,8 +26,6 @@ colors:
 
 
 =============================================== TODO ===============================================
-
-- fix login design...
 
 - In profile page, add a box at top for showing stats? E.g. number of recipes, meat recipes, etc.... And add more as the features scale.
 
