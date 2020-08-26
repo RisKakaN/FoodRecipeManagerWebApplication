@@ -34,6 +34,10 @@ class RecipesPage extends React.Component {
         this.handleSearchChange = this.handleSearchChange.bind(this);
         this.handleAddNewRecipe = this.handleAddNewRecipe.bind(this);
         this.handleFilterClick = this.handleFilterClick.bind(this);
+
+        if (this.props.location.pathname !== "/user/recipes") {
+            this.props.history.replace({ pathname: "/user/recipes" });
+        }
     }
 
     componentDidMount() {
@@ -75,7 +79,7 @@ class RecipesPage extends React.Component {
     }
 
     handleAddNewRecipe() {
-        this.props.history.push("/recipes/add/");
+        this.props.history.push("/user/recipes/add");
     }
 
     handleFilterClick(stateName, status, name) {

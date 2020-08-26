@@ -83,7 +83,7 @@ class RegistrationPage extends React.Component {
 
     render() {
         if (this.props.user && !this.state.registrationLoading) {
-            return <Redirect to={"/recipes"} />;
+            return <Redirect to={"/user/recipes"} />;
         } else {
             return (
                 <div className="registrationPage">

@@ -11,17 +11,9 @@ class NavigationBar extends React.Component {
     constructor(props) {
         super(props);
 
-        this.handleHomeButtonClick = this.handleHomeButtonClick.bind(this);
-        this.handleProfileClick = this.handleProfileClick.bind(this);
+        this.handleNavigationClick = this.handleNavigationClick.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
-    }
-
-    handleHomeButtonClick() {
-        this.props.history.push("");
-    }
-
-    handleProfileClick() {
-        this.props.history.push("/recipes/profile");
+        this.getNavigationPathEvenKey = this.getNavigationPathEvenKey.bind(this);
     }
 
     handleLogout() {
@@ -31,33 +23,44 @@ class NavigationBar extends React.Component {
             });
     }
 
+    handleNavigationClick(path) {
+        this.props.history.push(path);
+    }
+
+    getNavigationPathEvenKey() {
+        if (this.props.location.pathname.includes("/user/recipes")) {
+            return "recipes";
+        } else if (this.props.location.pathname.includes("/user/shopping-list")) {
+            return "shopping-list";
+        } else if (this.props.location.pathname.includes("/user/recipe-finder")) {
+            return "recipe-finder";
+        } else if (this.props.location.pathname.includes("/user/profile")) {
+            return "profile";
+        } else {
+            return "";
+        }
+    }
+
     render() {
         return (
-
             // !WARNING: Probably a react-bootstrap issue, which should be resolved in the future.
             // "Warning: findDOMNode is deprecated in StrictMode. findDOMNode was passed an instance of Transition which is inside StrictMode. 
             // Instead, add a ref directly to the element you want to reference. Learn more about using refs safely here: https://fb.me/react-strict-mode-find-node"
 
             <Navbar className="navigationBar" collapseOnSelect expand="lg" variant="dark">
-                <Navbar.Brand className="navigationBarHomeButton" onClick={this.handleHomeButtonClick}>
+                <Navbar.Brand className="navigationBarHomeButton" onClick={() => this.handleNavigationClick("")}>
                     <img className="navigationBarHomeButtonImg" src={navigationBarLogo} alt="Logo" />
                     Food Recipe Manager
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="mr-auto">
-                        <Nav.Link eventKey="1" onClick={this.handleHomeButtonClick} className="px-3" >Recipes</Nav.Link>
-                        <Nav.Link href="" className="px-3">Shopping list</Nav.Link>
-                        <Nav.Link href="" className="px-3">Recipe finder</Nav.Link>
-                        {/* <NavDropdown title="TBD-Dropdown" id="collasible-nav-dropdown">
-                            <NavDropdown.Item href="">TBD</NavDropdown.Item>
-                            <NavDropdown.Item href="">TBD</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="">TBD</NavDropdown.Item>
-                        </NavDropdown> */}
+                    <Nav className="mr-auto" activeKey={this.getNavigationPathEvenKey()}>
+                        <Nav.Link eventKey="recipes" onClick={() => this.handleNavigationClick("/user")} className="px-3" >Recipes</Nav.Link>
+                        <Nav.Link eventKey="shopping-list" onClick={() => this.handleNavigationClick("/user/shopping-list")} className="px-3">Shopping list</Nav.Link>
+                        <Nav.Link eventKey="recipe-finder" onClick={() => this.handleNavigationClick("/user/recipe-finder")} className="px-3">Recipe finder</Nav.Link>
                     </Nav>
-                    <Nav>
-                        <Nav.Link eventKey="2" onClick={this.handleProfileClick} className="px-3"><div style={{ maxWidth: "250px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{this.props.user.displayName}</div></Nav.Link>
+                    <Nav activeKey={this.getNavigationPathEvenKey()}>
+                        <Nav.Link eventKey="profile" onClick={() => this.handleNavigationClick("/user/profile")} className="px-3"><div style={{ maxWidth: "250px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{this.props.user.displayName}</div></Nav.Link>
                         <Nav.Link onClick={this.handleLogout} className="px-3">Logout</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>

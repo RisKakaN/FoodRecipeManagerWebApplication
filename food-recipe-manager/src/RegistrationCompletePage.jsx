@@ -17,7 +17,7 @@ class RegistrationCompletePage extends React.Component {
     render() {
         const pageAccessible = true ? ((typeof this.props.location.state !== "undefined") && this.props.location.state.registrationComplete) : false;
         if (this.props.user && !pageAccessible) {
-            return <Redirect to={"/recipes"} />;
+            return <Redirect to={"/user/recipes"} />;
         } else if (pageAccessible) {
             return (
                 <div className="registrationCompletePage">

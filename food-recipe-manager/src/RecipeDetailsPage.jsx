@@ -307,7 +307,7 @@ class RecipeDetailsPage extends React.Component {
                                     photoPreview: recipe.photoDownloadUri,
                                     recipeChangesUploading: false,
                                 });
-                                this.props.history.replace({ pathname: "/recipes/details/" + recipe.name, recipe: recipe });
+                                this.props.history.replace({ pathname: "/user/recipes/details/" + recipe.name, recipe: recipe });
                                 this.finishEditMode();
                             }
                         }).catch(() => {
@@ -345,7 +345,7 @@ class RecipeDetailsPage extends React.Component {
                                     photoPreview: null,
                                     recipeChangesUploading: false
                                 });
-                                this.props.history.replace({ pathname: "/recipes/details/" + recipe.name, recipe: recipe });
+                                this.props.history.replace({ pathname: "/user/recipes/details/" + recipe.name, recipe: recipe });
                                 this.finishEditMode();
                             }
                         }).catch(() => {
@@ -368,7 +368,7 @@ class RecipeDetailsPage extends React.Component {
                         dynamicPortions: recipe.portions,
                         recipeChangesUploading: false,
                     });
-                    this.props.history.replace({ pathname: "/recipes/details/" + recipe.name, recipe: recipe });
+                    this.props.history.replace({ pathname: "/user/recipes/details/" + recipe.name, recipe: recipe });
                     this.finishEditMode();
                 }
             }).catch(() => {
@@ -497,7 +497,7 @@ class RecipeDetailsPage extends React.Component {
             if (this.state.photoPath) {
                 storage.ref("images/" + this.props.user.uid + "/" + this.state.photoPath).delete().then(() => {
                     recipeReference.remove().then(() => {
-                        this.props.history.push("/recipes");
+                        this.props.history.push("/user/recipes");
                     }).catch(() => {
                         if (this.isComponentMounted) {
                             this.setState({
@@ -516,7 +516,7 @@ class RecipeDetailsPage extends React.Component {
                 });
             } else {
                 recipeReference.remove().then(() => {
-                    this.props.history.push("/recipes");
+                    this.props.history.push("/user/recipes");
                 }).catch(() => {
                     if (this.isComponentMounted) {
                         this.setState({

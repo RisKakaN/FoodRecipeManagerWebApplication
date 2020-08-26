@@ -69,7 +69,7 @@ class LoginPage extends React.Component {
 
     render() {
         if (this.props.user) {
-            return <Redirect to={"/recipes"} />;
+            return <Redirect to={"/user/recipes"} />;
         } else {
             return (
                 <div className="loginPage">

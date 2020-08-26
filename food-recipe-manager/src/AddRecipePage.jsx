@@ -223,7 +223,7 @@ class AddRecipePage extends React.Component {
                                 this.databaseRef.push(recipe).then(() => {
                                     if (this.isComponentMounted) {
                                         this.props.history.push(
-                                            "/recipes/details/" + this.state.name,
+                                            "/user/recipes/details/" + this.state.name,
                                             { recipe: recipe }
                                         );
                                     }
@@ -248,7 +248,7 @@ class AddRecipePage extends React.Component {
                         this.databaseRef.push(recipe).then(() => {
                             if (this.isComponentMounted) {
                                 this.props.history.push(
-                                    "/recipes/details/" + this.state.name,
+                                    "/user/recipes/details/" + this.state.name,
                                     { recipe: recipe }
                                 );
                             }

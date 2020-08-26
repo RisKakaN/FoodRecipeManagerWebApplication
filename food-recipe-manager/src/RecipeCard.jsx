@@ -12,7 +12,7 @@ class RecipeCard extends React.Component {
 
     handleClick() {
         this.props.history.push(
-            "/recipes/details/" + this.props.recipe.name,
+            "/user/recipes/details/" + this.props.recipe.name,
             { recipe: this.props.recipe }
         );
     }

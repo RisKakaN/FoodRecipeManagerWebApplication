@@ -9,6 +9,8 @@ import NavigationBar from "./NavigationBar.jsx"
 import RecipesPage from "./RecipesPage.jsx"
 import RecipeDetailsPage from "./RecipeDetailsPage.jsx"
 import AddRecipePage from "./AddRecipePage.jsx"
+import ShoppingListPage from "./ShoppingListPage.jsx"
+import RecipeFinderPage from "./RecipeFinderPage.jsx"
 import ProfilePage from "./ProfilePage.jsx"
 import GoodByePage from "./GoodByePage.jsx"
 import NotFoundPage from "./NotFoundPage.jsx"
@@ -50,17 +52,21 @@ export default class App extends React.Component {
 
             {/* Add other non-user authenticated page routes here. */}
 
-            <RequireAuth path="/recipes" user={this.state.user}>
+            <RequireAuth path="/user" user={this.state.user}>
               <div className="appNavigationBar">
                 <NavigationBar user={this.state.user} />
               </div>
-              <Route path="/recipes" render={({ match: { path } }) => (
+              <Route path="/user" render={({ match: { path } }) => (
                 <>
                   <Route exact path={`${path}/`} render={(props) => <RecipesPage user={this.state.user} {...props} />} />
-                  <Route exact path={`${path}/add`} render={(props) => <AddRecipePage user={this.state.user} {...props} />} />
-                  <Route exact path={`${path}/details/:recipeRouteName`} render={(props) => <RecipeDetailsPage user={this.state.user} {...props} />} />
+                  <Route exact path={`${path}/recipes`} render={(props) => <RecipesPage user={this.state.user} {...props} />} />
+                  <Route exact path={`${path}/recipes/add`} render={(props) => <AddRecipePage user={this.state.user} {...props} />} />
+                  <Route exact path={`${path}/recipes/details/:recipeRouteName`} render={(props) => <RecipeDetailsPage user={this.state.user} {...props} />} />
+                  <Route exact path={`${path}/shopping-list`} render={(props) => <ShoppingListPage user={this.state.user} {...props} />} />
+                  <Route exact path={`${path}/recipe-finder`} render={(props) => <RecipeFinderPage user={this.state.user} {...props} />} />
                   <Route exact path={`${path}/profile`} render={(props) => <ProfilePage user={this.state.user} {...props} />} />
-                  {/* Only user authenticated page routes here, which are in /recipes. */}
+                  {/* Only user authenticated page routes here, which are in /user. */}
+
                 </>
               )}
               />
