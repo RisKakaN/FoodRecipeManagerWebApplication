@@ -3,6 +3,7 @@ import { auth } from "./Firebase.js";
 import { withRouter } from "react-router-dom";
 import { Nav, Navbar } from "react-bootstrap";
 import navigationBarLogo from "./assets/navigationBarLogo.png";
+import profilePhotoPlaceholder from "./assets/profilePhotoPlaceholder.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./NavigationBar.css";
 
@@ -55,13 +56,26 @@ class NavigationBar extends React.Component {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="mr-auto" activeKey={this.getNavigationPathEvenKey()}>
-                        <Nav.Link eventKey="recipes" onClick={() => this.handleNavigationClick("/user")} className="px-3" >Recipes</Nav.Link>
-                        <Nav.Link eventKey="shopping-list" onClick={() => this.handleNavigationClick("/user/shopping-list")} className="px-3">Shopping list</Nav.Link>
-                        <Nav.Link eventKey="recipe-finder" onClick={() => this.handleNavigationClick("/user/recipe-finder")} className="px-3">Recipe finder</Nav.Link>
+                        <Nav.Link eventKey="recipes" onClick={() => this.handleNavigationClick("/user")} className="px-3 navigationBarLink" >Recipes</Nav.Link>
+                        <Nav.Link eventKey="shopping-list" onClick={() => this.handleNavigationClick("/user/shopping-list")} className="px-3 navigationBarLink">Shopping list</Nav.Link>
+                        <Nav.Link eventKey="recipe-finder" onClick={() => this.handleNavigationClick("/user/recipe-finder")} className="px-3 navigationBarLink">Recipe finder</Nav.Link>
                     </Nav>
                     <Nav activeKey={this.getNavigationPathEvenKey()}>
-                        <Nav.Link eventKey="profile" onClick={() => this.handleNavigationClick("/user/profile")} className="px-3"><div style={{ maxWidth: "250px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{this.props.user.displayName}</div></Nav.Link>
-                        <Nav.Link onClick={this.handleLogout} className="px-3">Logout</Nav.Link>
+                        <Nav.Link eventKey="profile" onClick={() => this.handleNavigationClick("/user/profile")} className="px-3 navigationBarLink">
+                            <div className="navigationBarProfile">
+                                <div className="navigationBarProfilePhotoHolder">
+                                    {this.props.profilePhoto ?
+                                        <div className="navigationBarProfilePhoto"><img src={this.props.profilePhoto} alt="Click to change"></img></div>
+                                        :
+                                        <img className="navigationBarProfilePagePhotoPlaceholderImage" src={profilePhotoPlaceholder} alt="Click to add" ></img>
+                                    }
+                                </div>
+                                <div className="navigationBarProfileName">
+                                    {this.props.profileName}
+                                </div>
+                            </div>
+                        </Nav.Link>
+                        <Nav.Link onClick={this.handleLogout} className="px-3 navigationBarLink">Logout</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

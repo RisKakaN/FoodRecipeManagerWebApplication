@@ -55,7 +55,7 @@
     cursor: pointer;
 }
 
-input[type="file"] {
+.recipeDetailsPagePhotoInput {
     display: none;
 }
 

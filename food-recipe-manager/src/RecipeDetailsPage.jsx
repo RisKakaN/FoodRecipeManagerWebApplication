@@ -554,7 +554,7 @@ class RecipeDetailsPage extends React.Component {
                                     :
                                     <>
                                         <label className="recipeDetailsPagePhotoHolder">
-                                            <input type="file" name="photo" accept="image/*" onClick={e => e.target.value = null} onChange={this.handlePhotoChange} />
+                                            <input className="recipeDetailsPagePhotoInput" type="file" name="photo" accept="image/*" onClick={e => e.target.value = null} onChange={this.handlePhotoChange} />
                                             {this.state.photoPreview ?
                                                 <img className="recipeDetailsPagePhoto" src={this.state.photoPreview} alt="Click to change" />
                                                 :

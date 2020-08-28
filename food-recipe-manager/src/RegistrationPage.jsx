@@ -1,7 +1,8 @@
 import React from "react";
-import { auth } from "./Firebase.js";
+import { auth, storage } from "./Firebase.js";
 import { Redirect, withRouter } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
+import profilePhotoPlaceholder from "./assets/profilePhotoPlaceholder.png";
 import "./RegistrationPage.css";
 
 class RegistrationPage extends React.Component {
@@ -10,12 +11,21 @@ class RegistrationPage extends React.Component {
         super(props);
 
         this.state = {
+            photo: null,
+            photoPreview: null,
+            photoEditError: null,
+            photoEditModeActive: false,
             email: "",
             password: "",
             displayName: "",
             registrationLoading: false,
             registrationFailMessage: null
         };
+
+        this.handleChangePhoto = this.handleChangePhoto.bind(this);
+        this.handleRemovePhoto = this.handleRemovePhoto.bind(this);
+        this.handleCancelPhotoEditMode = this.handleCancelPhotoEditMode.bind(this);
+        this.handleActivatePhotoEditMode = this.handleActivatePhotoEditMode.bind(this);
 
         this.handleRegistrationInputChange = this.handleRegistrationInputChange.bind(this);
         this.handleRegistrationClick = this.handleRegistrationClick.bind(this);
@@ -29,6 +39,58 @@ class RegistrationPage extends React.Component {
     componentWillUnmount() {
         clearTimeout(this.timeOutId);
         this.isComponentMounted = false;
+    }
+
+    handleActivatePhotoEditMode(e) {
+        e.preventDefault();
+        this.setState({
+            photoEditModeActive: true
+        });
+    }
+
+    handleCancelPhotoEditMode(e) {
+        e.preventDefault();
+        this.setState({
+            photoEditModeActive: false,
+            photoEditError: null
+        });
+    }
+
+    handleChangePhoto(e) {
+        e.preventDefault();
+        const photo = e.target.files[0];
+        if (photo) {
+            if (photo.size > 10000000) {
+                this.setState({
+                    photoEditError: "The photo is too big. Maximum size ~10mb."
+                })
+            } else {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    this.setState({
+                        photoEditModeActive: false,
+                        photo: photo,
+                        photoPreview: reader.result,
+                        photoEditError: null
+                    });
+                }
+                reader.readAsDataURL(photo);
+            }
+        } else {
+            this.setState({
+                photoEditError: "The photo could not be loaded. Please try again."
+            })
+        }
+    }
+
+    handleRemovePhoto(e) {
+        e.preventDefault();
+        this.setState({
+            photoEditModeActive: false,
+            photo: null,
+            photoPreview: null,
+            photoEditError: null
+        });
     }
 
     handleRegistrationInputChange(e) {
@@ -47,26 +109,76 @@ class RegistrationPage extends React.Component {
                 if (this.isComponentMounted) {
                     // Send email verification to the user:
                     auth.currentUser.sendEmailVerification();
-                    // Set user's display name:
-                    auth.currentUser.updateProfile({
-                        displayName: this.state.displayName
-                    }).then(() => {
-                        // Manually sign out since Firebase keeps you signed in by default after signing up.
-                        // Reason for signing out is to let the user sign in themselves for the first time.
-                        auth.signOut().then(() => {
-                            this.props.history.push(
-                                "/registration-complete",
-                                { registrationComplete: true }
-                            );
+
+                    if (this.state.photo) {
+                        const storageRef = storage.ref("images/" + auth.currentUser.uid + "/profile_photo");
+                        storageRef.put(this.state.photo).then(() => {
+                            storageRef.getDownloadURL().then((url) => {
+                                if (this.isComponentMounted) {
+                                    // Set user's display name and photo:
+                                    auth.currentUser.updateProfile({
+                                        displayName: this.state.displayName,
+                                        photoURL: url,
+                                    }).then(() => {
+                                        // Manually sign out since Firebase keeps you signed in by default after signing up.
+                                        // Reason for signing out is to let the user sign in themselves for the first time.
+                                        auth.signOut().then(() => {
+                                            this.props.history.push(
+                                                "/registration-complete",
+                                                { registrationComplete: true }
+                                            );
+                                        });
+                                    }).catch(() => {
+                                        auth.signOut().then(() => {
+                                            this.props.history.push(
+                                                "/registration-complete",
+                                                { registrationComplete: true }
+                                            );
+                                        });
+                                    });
+                                }
+                            }).catch(() => {
+                                // Error: Could not fetch the photo DownloadURL from Firebase Storage.
+                                // !TODO: Profile photo upload failure is currently not handled properly.
+                                auth.signOut().then(() => {
+                                    this.props.history.push(
+                                        "/registration-complete",
+                                        { registrationComplete: true }
+                                    );
+                                });
+                            });
+                        }).catch(() => {
+                            // Error: Photo could not be uploaded to Firebase Storage.
+                            // !TODO: Profile photo upload failure is currently not handled properly.
+                            auth.signOut().then(() => {
+                                this.props.history.push(
+                                    "/registration-complete",
+                                    { registrationComplete: true }
+                                );
+                            });
                         });
-                    }).catch(() => {
-                        auth.signOut().then(() => {
-                            this.props.history.push(
-                                "/registration-complete",
-                                { registrationComplete: true }
-                            );
+                    } else {
+                        // Set user's display name:
+                        auth.currentUser.updateProfile({
+                            displayName: this.state.displayName
+                        }).then(() => {
+                            // Manually sign out since Firebase keeps you signed in by default after signing up.
+                            // Reason for signing out is to let the user sign in themselves for the first time.
+                            auth.signOut().then(() => {
+                                this.props.history.push(
+                                    "/registration-complete",
+                                    { registrationComplete: true }
+                                );
+                            });
+                        }).catch(() => {
+                            auth.signOut().then(() => {
+                                this.props.history.push(
+                                    "/registration-complete",
+                                    { registrationComplete: true }
+                                );
+                            });
                         });
-                    });
+                    }
                 }
             }).catch((error) => {
                 if (this.isComponentMounted) {
@@ -90,6 +202,28 @@ class RegistrationPage extends React.Component {
                     <div className="registrationPageTitle">Create your account</div>
                     <div className="registrationPageBox">
                         <form className="registrationPageForm" onSubmit={this.handleRegistrationClick}>
+
+                            {this.state.photoEditModeActive ?
+                                <div className="registrationPagePhotoEditMode">
+                                    <label className="registrationPagePhotoEditModeButton">
+                                        <input className="registrationPagePhotoEditModeInput" type="file" name="photo" accept="image/*" onClick={e => e.target.value = null} onChange={this.handleChangePhoto} />
+                                        {this.state.photo ? "Change" : "Add"}
+                                    </label>
+                                    {this.state.photo && <button className="registrationPagePhotoEditModeButton" onClick={this.handleRemovePhoto}>Remove</button>}
+                                    <button className="registrationPagePhotoEditModeButton" onClick={this.handleCancelPhotoEditMode}>Cancel</button>
+                                </div>
+                                :
+                                <div className="registrationPagePhotoHolder" onClick={this.handleActivatePhotoEditMode}>
+                                    {this.state.photo ?
+                                        <div className="registrationPagePhoto"><img src={this.state.photoPreview} alt="Click to change"></img></div>
+                                        :
+                                        <img className="registrationPagePhotoPlaceholderImage" src={profilePhotoPlaceholder} alt="Click to add" ></img>
+                                    }
+                                </div>
+                            }
+                            {this.state.photoEditError && <div className="registrationPageErrorMessage">{this.state.photoEditError}</div>}
+
+
                             <div className="registrationPageLabel">Name</div>
                             <input className="registrationPageInput" type="text" name="displayName" placeholder="Name..." autoComplete="on" onChange={this.handleRegistrationInputChange} value={this.state.displayName} minLength="1" maxLength="15" required />
                             <div className="registrationPageLabel">Email</div>

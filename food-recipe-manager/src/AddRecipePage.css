@@ -46,7 +46,7 @@
     cursor: pointer;
 }
 
-input[type="file"] {
+.addRecipePagePhotoInput {
     display: none;
 }
 

@@ -1,7 +1,8 @@
 import React from "react";
-import Firebase, { auth } from "./Firebase.js";
+import Firebase, { auth, storage } from "./Firebase.js";
 import { withRouter } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
+import profilePhotoPlaceholder from "./assets/profilePhotoPlaceholder.png";
 import "./ProfilePage.css";
 
 class ProfilePage extends React.Component {
@@ -10,6 +11,10 @@ class ProfilePage extends React.Component {
         super(props);
 
         this.state = {
+            photoEditModeActive: false,
+            photoEditLoading: false,
+            photoEditError: null,
+
             displayName: "",
             displayNameEditModeActive: false,
             displayNameEditLoading: false,
@@ -32,6 +37,11 @@ class ProfilePage extends React.Component {
             reAuthenticationEmail: "",
             reAuthenticationPassword: ""
         };
+
+        this.handleChangePhoto = this.handleChangePhoto.bind(this);
+        this.handleRemovePhoto = this.handleRemovePhoto.bind(this);
+        this.handleCancelPhotoEditMode = this.handleCancelPhotoEditMode.bind(this);
+        this.handleActivatePhotoEditMode = this.handleActivatePhotoEditMode.bind(this);
 
         this.handleInputChange = this.handleInputChange.bind(this);
 
@@ -57,11 +67,132 @@ class ProfilePage extends React.Component {
     }
 
     componentWillUnmount() {
+        clearTimeout(this.timeOutChangePhoto);
+        clearTimeout(this.timeOutRemovePhoto);
         clearTimeout(this.timeOutDisplayName);
         clearTimeout(this.timeOutEmail);
         clearTimeout(this.timeOutPassword);
         clearTimeout(this.timeOutDeleteAccount);
         this.isComponentMounted = false;
+    }
+
+    handleActivatePhotoEditMode() {
+        this.setState({
+            photoEditModeActive: true
+        });
+    }
+
+    handleCancelPhotoEditMode() {
+        this.setState({
+            photoEditModeActive: false,
+            photoEditError: null
+        });
+    }
+
+    handleChangePhoto(e) {
+        this.setState({
+            photoEditLoading: true
+        });
+        const photo = e.target.files[0];
+        if (photo) {
+            if (photo.size > 10000000) {
+                this.setState({
+                    photoEditLoading: false,
+                    photoEditError: "The photo is too big. Maximum size ~10mb."
+                })
+            } else {
+                this.timeOutChangePhoto = setTimeout(() => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+
+                        const storageRef = storage.ref("images/" + this.props.user.uid + "/profile_photo");
+                        storageRef.put(photo).then(() => {
+                            storageRef.getDownloadURL().then((url) => {
+                                if (this.isComponentMounted) {
+                                    auth.currentUser.updateProfile({
+                                        photoURL: url,
+                                    }).then(() => {
+                                        if (this.isComponentMounted) {
+                                            this.setState({
+                                                photoEditModeActive: false,
+                                                photoEditLoading: false,
+                                                photoEditError: null
+                                            });
+                                            this.props.updateProfilePhoto(url)
+                                        }
+                                    }).catch(() => {
+                                        if (this.isComponentMounted) {
+                                            this.setState({
+                                                photoEditLoading: false,
+                                                photoEditError: "Something went wrong! Please refresh and try again."
+                                            });
+                                        }
+                                    });
+                                }
+                            }).catch(() => {
+                                // Error: Could not fetch the photo DownloadURL from Firebase Storage.
+                                if (this.isComponentMounted) {
+                                    this.setState({
+                                        photoEditLoading: false,
+                                        photoEditError: "Something went wrong! Please refresh and try again."
+                                    });
+                                }
+                            });
+                        }).catch(() => {
+                            // Error: Photo could not be uploaded to Firebase Storage.
+                            if (this.isComponentMounted) {
+                                this.setState({
+                                    photoEditLoading: false,
+                                    photoEditError: "Something went wrong! Please refresh and try again."
+                                });
+                            }
+                        });
+                    }
+                    reader.readAsDataURL(photo);
+                }, 300);
+            }
+        } else {
+            this.setState({
+                photoEditLoading: false,
+                photoEditError: "The photo could not be loaded. Please try again."
+            })
+        }
+    }
+
+    handleRemovePhoto() {
+        this.setState({
+            photoEditLoading: true
+        });
+        this.timeOutRemovePhoto = setTimeout(() => {
+            auth.currentUser.updateProfile({
+                photoURL: null,
+            }).then(() => {
+                storage.ref("images/" + this.props.user.uid + "/profile_photo").delete().then(() => {
+                    if (this.isComponentMounted) {
+                        this.setState({
+                            photoEditModeActive: false,
+                            photoEditLoading: false,
+                            photoEditError: null
+                        });
+                        this.props.updateProfilePhoto(null)
+                    }
+                }).catch(() => {
+                    if (this.isComponentMounted) {
+                        this.setState({
+                            photoEditLoading: false,
+                            photoEditError: "Photo could not be removed. Please try again."
+                        });
+                    }
+                });
+            }).catch(() => {
+                if (this.isComponentMounted) {
+                    this.setState({
+                        photoEditLoading: false,
+                        photoEditError: "Photo could not be removed. Please try again."
+                    });
+                }
+            });
+        }, 300);
     }
 
     handleInputChange(e) {
@@ -98,6 +229,7 @@ class ProfilePage extends React.Component {
                         displayNameEditLoading: false,
                         displayNameEditError: null
                     });
+                    this.props.updateProfileName(this.state.displayName)
                 }
             }).catch((error) => {
                 if (this.isComponentMounted) {
@@ -299,6 +431,63 @@ class ProfilePage extends React.Component {
                 <div className="profilePage">
                     <div className="profilePageTitle">Profile</div>
 
+                    {/* ============================== Photo ============================== */}
+                    <div className="profilePageBox">
+                        {this.state.photoEditLoading ?
+                            <div className="profilePagePhotoLoader">
+                                <PulseLoader
+                                    color={"#123abc"}
+                                    loading={this.state.photoEditLoading}
+                                />
+                            </div>
+                            :
+                            <>
+                                {this.state.photoEditModeActive ?
+                                    <div className="profilePagePhotoEditMode">
+                                        <label className="profilePagePhotoEditModeButton">
+                                            <input className="profilePagePhotoEditModeInput" type="file" name="photo" accept="image/*" onClick={e => e.target.value = null} onChange={this.handleChangePhoto} />
+                                            {user.photoURL ? "Change" : "Add"}
+                                        </label>
+                                        {user.photoURL && <button className="profilePagePhotoEditModeButton" onClick={this.handleRemovePhoto}>Remove</button>}
+                                        <button className="profilePagePhotoEditModeButton" onClick={this.handleCancelPhotoEditMode}>Cancel</button>
+                                    </div>
+                                    :
+                                    <div className="profilePagePhotoHolder" onClick={this.handleActivatePhotoEditMode}>
+                                        {user.photoURL ?
+                                            <div className="profilePagePhoto"><img src={user.photoURL} alt="Click to change"></img></div>
+                                            :
+                                            <img className="profilePagePhotoPlaceholderImage" src={profilePhotoPlaceholder} alt="Click to add" ></img>
+                                        }
+                                    </div>
+                                }
+                                {this.state.photoEditError && <div className="profilePageErrorLabel" style={{ justifyContent: "center" }}>{this.state.photoEditError}</div>}
+                            </>
+                        }
+                    </div>
+
+                    {/* <div className="profilePageBox">
+                        {this.state.photoEditLoading ?
+                            <div className="profilePagePhotoLoader">
+                                <PulseLoader
+                                    color={"#123abc"}
+                                    loading={this.state.photoEditLoading}
+                                />
+                            </div>
+                            :
+                            <>
+                                <label className="profilePagePhotoHolder">
+                                    <input type="file" name="photo" accept="image/*" onClick={e => e.target.value = null} onChange={this.handleChangePhoto} />
+                                    {user.photoURL ?
+                                        <div className="profilePagePhoto"><img src={user.photoURL} alt="Click to change"></img></div>
+                                        :
+                                        <img className="profilePagePhotoPlaceholderImage" src={profilePhotoPlaceholder} alt="Click to add" ></img>
+                                    }
+                                </label>
+                                {this.state.photoEditError && <div className="profilePageErrorLabel" style={{ justifyContent: "center" }}>{this.state.photoEditError}</div>}
+                            </>
+                        }
+                    </div> */}
+
                     {/* ============================== Name ============================== */}
                     <div className="profilePageBox">
                         <form className="profilePageForm" onSubmit={this.handleSaveDisplayName}>
@@ -313,7 +502,7 @@ class ProfilePage extends React.Component {
                                 :
                                 <>
                                     <input className="profilePageFormPropertyInput" type="text" name="displayName" placeholder="Name..." onChange={this.handleInputChange} value={this.state.displayName} minLength="1" maxLength="15" autoComplete="off" required />
-                                    <div className="profilePageFormPropertyErrorLabel">
+                                    <div className="profilePageErrorLabel">
                                         {this.state.displayNameEditError}
                                     </div>
                                     {this.state.displayNameEditLoading ?
@@ -353,7 +542,7 @@ class ProfilePage extends React.Component {
                                     <input className="profilePageFormPropertyInput" type="password" name="reAuthenticationPassword" placeholder="Password..." onChange={this.handleInputChange} value={this.state.reAuthenticationPassword} minLength="6" autoComplete="off" required />
                                     <div className="profilePageFormPropertyLabel">New email</div>
                                     <input className="profilePageFormPropertyInput" type="email" name="email" placeholder="Email..." onChange={this.handleInputChange} value={this.state.email} autoComplete="off" required />
-                                    <div className="profilePageFormPropertyErrorLabel">
+                                    <div className="profilePageErrorLabel">
                                         {this.state.emailEditError}
                                     </div>
                                     {this.state.emailEditLoading ?
@@ -393,7 +582,7 @@ class ProfilePage extends React.Component {
                                     <input className="profilePageFormPropertyInput" type="password" name="reAuthenticationPassword" placeholder="Password..." onChange={this.handleInputChange} value={this.state.reAuthenticationPassword} minLength="6" autoComplete="off" required />
                                     <div className="profilePageFormPropertyLabel">New password</div>
                                     <input className="profilePageFormPropertyInput" type="password" name="password" placeholder="Password..." onChange={this.handleInputChange} value={this.state.password} minLength="6" autoComplete="off" required />
-                                    <div className="profilePageFormPropertyErrorLabel">
+                                    <div className="profilePageErrorLabel">
                                         {this.state.passwordEditError}
                                     </div>
                                     {this.state.passwordEditLoading ?
@@ -428,7 +617,7 @@ class ProfilePage extends React.Component {
                                     <input className="profilePageFormPropertyInput" type="email" name="reAuthenticationEmail" placeholder="Email..." onChange={this.handleInputChange} value={this.state.reAuthenticationEmail} autoComplete="off" required />
                                     <div className="profilePageFormPropertyLabel">Current password</div>
                                     <input className="profilePageFormPropertyInput" type="password" name="reAuthenticationPassword" placeholder="Password..." onChange={this.handleInputChange} value={this.state.reAuthenticationPassword} minLength="6" autoComplete="off" required />
-                                    <div className="profilePageFormPropertyErrorLabel">
+                                    <div className="profilePageErrorLabel">
                                         {this.state.deleteAccountError}
                                     </div>
                                     {this.state.deleteAccountLoading ?
@@ -448,7 +637,7 @@ class ProfilePage extends React.Component {
                             }
                         </form>
                     </div>
-                </div>
+                </div >
             );
         } else {
             return null;

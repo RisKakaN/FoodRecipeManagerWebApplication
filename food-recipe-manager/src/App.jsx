@@ -24,7 +24,12 @@ export default class App extends React.Component {
     // Make use of localStorage to store current user's session, until the user manually logout.
     this.state = {
       user: JSON.parse(localStorage.getItem("authenticatedUser")),
+      profileName: null,
+      profilePhoto: null
     };
+
+    this.updateProfileName = this.updateProfileName.bind(this);
+    this.updateProfilePhoto = this.updateProfilePhoto.bind(this);
   }
 
   componentDidMount() {
@@ -40,7 +45,19 @@ export default class App extends React.Component {
     });
   }
 
+  // Updates made in the Profile page will update the respective field in the navigation bar.
+  updateProfileName(name) {
+    this.setState({ profileName: name });
+  }
+
+  // Updates made in the Profile page will update the respective field in the navigation bar.
+  updateProfilePhoto(photo) {
+    this.setState({ profilePhoto: photo });
+  }
+
   render() {
+    const profileName = this.state.profileName ? this.state.profileName : (this.state.user ? this.state.user.displayName : null);
+    const profilePhoto = this.state.profilePhoto ? this.state.profilePhoto : (this.state.user ? this.state.user.photoURL : null);
     return (
       <div className="app">
         <BrowserRouter>
@@ -49,12 +66,11 @@ export default class App extends React.Component {
             <Route exact path="/registration" render={(props) => <RegistrationPage user={this.state.user} {...props} />} />
             <Route exact path="/registration-complete" render={(props) => <RegistrationCompletePage user={this.state.user} {...props} />} />
             <Route exact path="/reset-password" render={(props) => <ResetPasswordPage user={this.state.user} {...props} />} />
-
             {/* Add other non-user authenticated page routes here. */}
 
             <RequireAuth path="/user" user={this.state.user}>
               <div className="appNavigationBar">
-                <NavigationBar user={this.state.user} />
+                <NavigationBar profileName={profileName} profilePhoto={profilePhoto} />
               </div>
               <Route path="/user" render={({ match: { path } }) => (
                 <>
@@ -64,7 +80,7 @@ export default class App extends React.Component {
                   <Route exact path={`${path}/recipes/details/:recipeRouteName`} render={(props) => <RecipeDetailsPage user={this.state.user} {...props} />} />
                   <Route exact path={`${path}/shopping-list`} render={(props) => <ShoppingListPage user={this.state.user} {...props} />} />
                   <Route exact path={`${path}/recipe-finder`} render={(props) => <RecipeFinderPage user={this.state.user} {...props} />} />
-                  <Route exact path={`${path}/profile`} render={(props) => <ProfilePage user={this.state.user} {...props} />} />
+                  <Route exact path={`${path}/profile`} render={(props) => <ProfilePage user={this.state.user} updateProfileName={this.updateProfileName} updateProfilePhoto={this.updateProfilePhoto} {...props} />} />
                   {/* Only user authenticated page routes here, which are in /user. */}
 
                 </>
