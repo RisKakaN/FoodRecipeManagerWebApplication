@@ -26,8 +26,6 @@ colors:
 
 
 =============================================== TODO ===============================================
-- Fix delete account not deleting recipe data/photos and profile photo.
-
 - fix photo proportion (stretched...) in recipe and cards.
 
 - Add warning label in profile if user has not verified email. Add option to resend verification email.

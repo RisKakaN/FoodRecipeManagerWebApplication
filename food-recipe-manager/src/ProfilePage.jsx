@@ -1,5 +1,5 @@
 import React from "react";
-import Firebase, { auth, storage } from "./Firebase.js";
+import Firebase, { storage } from "./Firebase.js";
 import { withRouter } from "react-router-dom";
 import PulseLoader from "react-spinners/PulseLoader";
 import profilePhotoPlaceholder from "./assets/profilePhotoPlaceholder.png";
@@ -109,7 +109,7 @@ class ProfilePage extends React.Component {
                         storageRef.put(photo).then(() => {
                             storageRef.getDownloadURL().then((url) => {
                                 if (this.isComponentMounted) {
-                                    auth.currentUser.updateProfile({
+                                    this.props.user.updateProfile({
                                         photoURL: url,
                                     }).then(() => {
                                         if (this.isComponentMounted) {
@@ -164,7 +164,7 @@ class ProfilePage extends React.Component {
             photoEditLoading: true
         });
         this.timeOutRemovePhoto = setTimeout(() => {
-            auth.currentUser.updateProfile({
+            this.props.user.updateProfile({
                 photoURL: null,
             }).then(() => {
                 storage.ref("images/" + this.props.user.uid + "/profile_photo").delete().then(() => {
@@ -205,7 +205,7 @@ class ProfilePage extends React.Component {
     handleEditDisplayName(e) {
         e.preventDefault();
         this.setState({
-            displayName: auth.currentUser.displayName,
+            displayName: this.props.user.displayName,
             displayNameEditModeActive: true,
             displayNameEditLoading: false,
             displayNameEditError: null
@@ -220,7 +220,7 @@ class ProfilePage extends React.Component {
         });
 
         this.timeOutDisplayName = setTimeout(() => {
-            auth.currentUser.updateProfile({
+            this.props.user.updateProfile({
                 displayName: this.state.displayName,
             }).then(() => {
                 if (this.isComponentMounted) {
@@ -272,7 +272,7 @@ class ProfilePage extends React.Component {
         });
 
         this.timeOutEmail = setTimeout(() => {
-            const user = auth.currentUser;
+            const user = this.props.user;
             const credential = Firebase.auth.EmailAuthProvider.credential(
                 this.state.reAuthenticationEmail,
                 this.state.reAuthenticationPassword
@@ -330,7 +330,7 @@ class ProfilePage extends React.Component {
         });
 
         this.timeOutPassword = setTimeout(() => {
-            const user = auth.currentUser;
+            const user = this.props.user;
             const credential = Firebase.auth.EmailAuthProvider.credential(
                 this.state.reAuthenticationEmail,
                 this.state.reAuthenticationPassword
@@ -380,39 +380,63 @@ class ProfilePage extends React.Component {
         });
     }
 
-    handleConfirmDeleteAccount(e) {
+    async handleConfirmDeleteAccount(e) {
         e.preventDefault();
         this.setState({
             deleteAccountLoading: true,
             deleteAccountError: null
         });
-        this.timeOutDeleteAccount = setTimeout(() => {
-            const user = auth.currentUser;
-            const credential = Firebase.auth.EmailAuthProvider.credential(
-                this.state.reAuthenticationEmail,
-                this.state.reAuthenticationPassword
-            );
-            user.reauthenticateWithCredential(credential).then(() => {
-                user.delete().then(() => {
-                    this.props.history.push(
-                        "/good-bye",
-                        { accountDeletionComplete: true }
-                    );
-                }).catch((error) => {
-                    this.setState({
-                        deleteAccountModeActive: true,
-                        deleteAccountLoading: false,
-                        deleteAccountError: error.message
-                    });
-                });
-            }).catch((error) => {
+
+        const user = this.props.user;
+        const credential = Firebase.auth.EmailAuthProvider.credential(
+            this.state.reAuthenticationEmail,
+            this.state.reAuthenticationPassword
+        );
+        // Delete recipes, recipe photos, profile photo, and lastly the account.
+        this.timeOutDeleteAccount = setTimeout(async () => {
+            try {
+                // Reauthentication is required in order to delete account and data.
+                await user.reauthenticateWithCredential(credential);
+                await this.deleteRecipes();
+                await this.deleteProfilePhoto();
+                await this.deleteAccount();
+                this.props.history.push("/good-bye", { accountDeletionComplete: true });
+            } catch (error) {
                 this.setState({
-                    deleteAccountModeActive: true,
                     deleteAccountLoading: false,
                     deleteAccountError: error.message
                 });
-            });
+            }
         }, 300);
+    }
+
+    async deleteRecipes() {
+        const uid = this.props.user.uid;
+        const snapshot = await Firebase.database().ref("recipes/" + uid).once("value");
+        if (snapshot.val()) {
+            let promises = [];
+            Object.keys(snapshot.val()).forEach((recipeId) => {
+                // Delete recipe data.
+                promises.push(Firebase.database().ref("recipes/" + uid + "/" + recipeId).remove());
+                // Delete recipe photo if it exists.
+                if (snapshot.val()[recipeId].photoPath) {
+                    promises.push(storage.ref("images/" + uid + "/" + snapshot.val()[recipeId].photoPath).delete());
+                }
+            });
+            await Promise.all(promises);
+        }
+    }
+
+    async deleteProfilePhoto() {
+        // Delete profile photo if it exists.
+        const user = this.props.user;
+        if (user.photoURL) {
+            await storage.ref("images/" + user.uid + "/profile_photo").delete();
+        }
+    }
+
+    async deleteAccount() {
+        await this.props.user.delete();
     }
 
     handleCancelDeleteAccount(e) {
@@ -425,7 +449,7 @@ class ProfilePage extends React.Component {
     }
 
     render() {
-        const user = auth.currentUser;
+        const user = this.props.user;
         if (user) {
             return (
                 <div className="profilePage">
@@ -464,29 +488,6 @@ class ProfilePage extends React.Component {
                             </>
                         }
                     </div>
-
-                    {/* <div className="profilePageBox">
-                        {this.state.photoEditLoading ?
-                            <div className="profilePagePhotoLoader">
-                                <PulseLoader
-                                    color={"#123abc"}
-                                    loading={this.state.photoEditLoading}
-                                />
-                            </div>
-                            :
-                            <>
-                                <label className="profilePagePhotoHolder">
-                                    <input type="file" name="photo" accept="image/*" onClick={e => e.target.value = null} onChange={this.handleChangePhoto} />
-                                    {user.photoURL ?
-                                        <div className="profilePagePhoto"><img src={user.photoURL} alt="Click to change"></img></div>
-                                        :
-                                        <img className="profilePagePhotoPlaceholderImage" src={profilePhotoPlaceholder} alt="Click to add" ></img>
-                                    }
-                                </label>
-                                {this.state.photoEditError && <div className="profilePageErrorLabel" style={{ justifyContent: "center" }}>{this.state.photoEditError}</div>}
-                            </>
-                        }
-                    </div> */}
 
                     {/* ============================== Name ============================== */}
                     <div className="profilePageBox">
