@@ -24,6 +24,9 @@ class ProfilePage extends React.Component {
             emailEditModeActive: false,
             emailEditLoading: false,
             emailEditError: null,
+            emailSendVerificationLoading: false,
+            emailSendVerificationError: null,
+            emailVerificationSent: false,
 
             password: "",
             passwordEditModeActive: false,
@@ -52,6 +55,7 @@ class ProfilePage extends React.Component {
         this.handleEditEmail = this.handleEditEmail.bind(this);
         this.handleSaveEmail = this.handleSaveEmail.bind(this);
         this.handleCancelEmail = this.handleCancelEmail.bind(this);
+        this.handleReSendEmailVerification = this.handleReSendEmailVerification.bind(this);
 
         this.handleEditPassword = this.handleEditPassword.bind(this);
         this.handleSavePassword = this.handleSavePassword.bind(this);
@@ -71,6 +75,7 @@ class ProfilePage extends React.Component {
         clearTimeout(this.timeOutRemovePhoto);
         clearTimeout(this.timeOutDisplayName);
         clearTimeout(this.timeOutEmail);
+        clearTimeout(this.timeOutSendEmailVerification);
         clearTimeout(this.timeOutPassword);
         clearTimeout(this.timeOutDeleteAccount);
         this.isComponentMounted = false;
@@ -279,24 +284,30 @@ class ProfilePage extends React.Component {
             );
             user.reauthenticateWithCredential(credential).then(() => {
                 user.updateEmail(this.state.email).then(() => {
-                    this.setState({
-                        emailEditModeActive: false,
-                        emailEditLoading: false,
-                        emailEditError: null
-                    });
+                    if (this.isComponentMounted) {
+                        this.setState({
+                            emailEditModeActive: false,
+                            emailEditLoading: false,
+                            emailEditError: null
+                        });
+                    }
                 }).catch((error) => {
+                    if (this.isComponentMounted) {
+                        this.setState({
+                            emailEditModeActive: true,
+                            emailEditLoading: false,
+                            emailEditError: error.message
+                        });
+                    }
+                });
+            }).catch((error) => {
+                if (this.isComponentMounted) {
                     this.setState({
                         emailEditModeActive: true,
                         emailEditLoading: false,
                         emailEditError: error.message
                     });
-                });
-            }).catch((error) => {
-                this.setState({
-                    emailEditModeActive: true,
-                    emailEditLoading: false,
-                    emailEditError: error.message
-                });
+                }
             });
         }, 300);
     }
@@ -308,6 +319,31 @@ class ProfilePage extends React.Component {
             emailEditLoading: false,
             emailEditError: null
         });
+    }
+
+    handleReSendEmailVerification(e) {
+        e.preventDefault();
+        this.setState({
+            emailSendVerificationLoading: true,
+            emailSendVerificationError: null
+        });
+        this.timeOutSendEmailVerification = setTimeout(() => {
+            this.props.user.sendEmailVerification().then(() => {
+                if (this.isComponentMounted) {
+                    this.setState({
+                        emailVerificationSent: true,
+                        emailSendVerificationLoading: false
+                    });
+                }
+            }).catch((error) => {
+                if (this.isComponentMounted) {
+                    this.setState({
+                        emailSendVerificationLoading: false,
+                        emailSendVerificationError: error.message
+                    });
+                }
+            });
+        }, 300);
     }
 
     // ============================== Password ==============================
@@ -337,24 +373,30 @@ class ProfilePage extends React.Component {
             );
             user.reauthenticateWithCredential(credential).then(() => {
                 user.updatePassword(this.state.password).then(() => {
-                    this.setState({
-                        passwordEditModeActive: false,
-                        passwordEditLoading: false,
-                        passwordEditError: null
-                    });
+                    if (this.isComponentMounted) {
+                        this.setState({
+                            passwordEditModeActive: false,
+                            passwordEditLoading: false,
+                            passwordEditError: null
+                        });
+                    }
                 }).catch((error) => {
+                    if (this.isComponentMounted) {
+                        this.setState({
+                            passwordEditModeActive: true,
+                            passwordEditLoading: false,
+                            passwordEditError: error.message
+                        });
+                    }
+                });
+            }).catch((error) => {
+                if (this.isComponentMounted) {
                     this.setState({
                         passwordEditModeActive: true,
                         passwordEditLoading: false,
                         passwordEditError: error.message
                     });
-                });
-            }).catch((error) => {
-                this.setState({
-                    passwordEditModeActive: true,
-                    passwordEditLoading: false,
-                    passwordEditError: error.message
-                });
+                }
             });
         }, 300);
     }
@@ -402,10 +444,12 @@ class ProfilePage extends React.Component {
                 await this.deleteAccount();
                 this.props.history.push("/good-bye", { accountDeletionComplete: true });
             } catch (error) {
-                this.setState({
-                    deleteAccountLoading: false,
-                    deleteAccountError: error.message
-                });
+                if (this.isComponentMounted) {
+                    this.setState({
+                        deleteAccountLoading: false,
+                        deleteAccountError: error.message
+                    });
+                }
             }
         }, 300);
     }
@@ -527,12 +571,34 @@ class ProfilePage extends React.Component {
                     {/* ============================== Email ============================== */}
                     <div className="profilePageBox">
                         <form className="profilePageForm" onSubmit={this.handleSaveEmail}>
-                            <div className="profilePageFormPropertyLabel">Email</div>
+                            <div className="profilePageFormPropertyLabel">
+                                Email
+                                {!this.props.user.emailVerified &&
+                                    <div className="profilePageErrorLabel" style={{ marginLeft: "10px" }}>
+                                        Not verified. Please verify!
+                                    </div>
+                                }
+                            </div>
                             {!this.state.emailEditModeActive ?
                                 <>
                                     <div className="profilePageFormProperty">{user.email}</div>
                                     <div className="profilePageFormPropertyButtonHolder">
+                                        {!this.props.user.emailVerified &&
+                                            (this.state.emailSendVerificationLoading ?
+                                                <div className="profilePageLoader" style={{ width: "100px", marginRight: "auto" }}>
+                                                    <PulseLoader
+                                                        color={"#123abc"}
+                                                        loading={this.state.emailSendVerificationLoading}
+                                                    />
+                                                </div>
+                                                :
+                                                <button className="profilePageFormPropertyButton" style={{ marginLeft: "0", marginRight: "auto" }} onClick={this.handleReSendEmailVerification}>Re-send</button>
+                                            )
+                                        }
                                         <button className="profilePageFormPropertyButton" onClick={this.handleEditEmail}>Edit</button>
+                                    </div>
+                                    <div className="profilePageErrorLabel" >
+                                        {this.state.emailSendVerificationError}
                                     </div>
                                 </>
                                 :

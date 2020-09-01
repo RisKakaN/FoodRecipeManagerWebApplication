@@ -29,8 +29,9 @@ colors:
 - recipe page list should by default be in alphabetical order. and maybe also add filter options for ordering...
 
 - improve filter feature. one button which opens many filters? (instead of multiple visible buttons. takes up space...)
-
-- Add warning label in profile if user has not verified email. Add option to resend verification email.
+    - filter by name (alphabetical order).
+    - filter by rating.
+    - filter by time.
 
 - In profile page, add a box at top for showing stats? E.g. number of recipes, meat recipes, etc.... And add more as the features scale.
 
@@ -44,7 +45,12 @@ colors:
 
 - Implement Favorites. OR rating? And add corresponding filters.
 
-- Improve filters and add more. E.g. filter by time.
+
+
+- PROBLEMS:
+    - Why is the UI in chrome-iphone not the same as in real-iphone. In real-iphone, the layout is messed up... In chrome-iphone, it looks perfect.
+
+
 
 - NEW FEATURES/PAGES?
     - Shopping list.
