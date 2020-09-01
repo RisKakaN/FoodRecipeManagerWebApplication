@@ -14,13 +14,13 @@
 .recipeCardPhotoFrame {
     width: 100%;
     height: 190px;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .recipeCardPhoto {
-    width: 100%;
     height: 100%;
 }
 
