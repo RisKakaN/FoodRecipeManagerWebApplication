@@ -55,13 +55,24 @@ class RecipesPage extends React.Component {
     }
 
     fetchDataFromFirebase() {
-        const recipesRef = Firebase.database().ref("recipes/" + this.props.user.uid);
-        recipesRef.once("value", (snapshot) => {
+        Firebase.database().ref("recipes/" + this.props.user.uid).once("value").then((snapshot) => {
             if (this.isComponentMounted) {
                 if (snapshot.val()) {
+                    let sortedRecipes = Object.values(snapshot.val());
+                    sortedRecipes.sort((a, b) => {
+                        let recipeA = a.name.toLowerCase();
+                        let recipeB = b.name.toLowerCase();
+                        if (recipeA < recipeB) {
+                            return -1;
+                        }
+                        if (recipeA > recipeB) {
+                            return 1;
+                        }
+                        return 0;
+                    });
                     this.setState({
                         dataLoading: false,
-                        recipes: snapshot.val()
+                        recipes: sortedRecipes
                     });
                 } else {
                     this.setState({
