@@ -42,6 +42,7 @@ class RecipeDetailsPage extends React.Component {
             // States for displaying dynamic ingredient proportions according to number of portions set:
             dynamicPortions: null,
             dynamicIngredientsMultiplier: 1, // = (dynamicPortions / this.state.portions)
+            ingredientsCopy: null,
         };
 
         this.instructionsTextAreaRef = React.createRef();
@@ -56,6 +57,7 @@ class RecipeDetailsPage extends React.Component {
         this.incrementPortions = this.incrementPortions.bind(this);
         this.addIngredient = this.addIngredient.bind(this);
         this.removeIngredient = this.removeIngredient.bind(this);
+        this.handleIngredientAmountInputChangeInAdjustingMode = this.handleIngredientAmountInputChangeInAdjustingMode.bind(this);
         this.instructionsTextareaChange = this.instructionsTextareaChange.bind(this);
 
         this.activateEditMode = this.activateEditMode.bind(this);
@@ -128,8 +130,13 @@ class RecipeDetailsPage extends React.Component {
             if (this.state.dynamicPortions > 1) {
                 this.setState(prevState => ({
                     dynamicPortions: prevState.dynamicPortions - 1,
-                    dynamicIngredientsMultiplier: (prevState.dynamicPortions - 1) / this.state.currentRecipe.portions
-                }));
+                    ingredientsCopy: this.state.ingredients.map(
+                        ingredient => ({
+                            ...ingredient,
+                            amount: ingredient.amount && +(ingredient.amount * ((prevState.dynamicPortions - 1) / this.state.currentRecipe.portions)).toFixed(2),
+                        })
+                    )
+                }))
             }
         }
     }
@@ -148,8 +155,13 @@ class RecipeDetailsPage extends React.Component {
             if (this.state.portions < 99) {
                 this.setState(prevState => ({
                     dynamicPortions: prevState.dynamicPortions + 1,
-                    dynamicIngredientsMultiplier: (prevState.dynamicPortions + 1) / this.state.currentRecipe.portions
-                }));
+                    ingredientsCopy: this.state.ingredients.map(
+                        ingredient => ({
+                            ...ingredient,
+                            amount: ingredient.amount && +(ingredient.amount * ((prevState.dynamicPortions + 1) / this.state.currentRecipe.portions)).toFixed(2),
+                        })
+                    )
+                }))
             }
         }
     }
@@ -161,6 +173,7 @@ class RecipeDetailsPage extends React.Component {
                 this.setState(prevState => ({
                     ingredientInputError: null,
                     ingredients: [...prevState.ingredients, { amount: prevState.currentIngredientAmount ? parseFloat(prevState.currentIngredientAmount) : null, unit: prevState.currentIngredientUnit, name: prevState.currentIngredientName }],
+                    ingredientsCopy: [...prevState.ingredients, { amount: prevState.currentIngredientAmount ? parseFloat(prevState.currentIngredientAmount) : null, unit: prevState.currentIngredientUnit, name: prevState.currentIngredientName }],
                     currentIngredientAmount: "",
                     currentIngredientUnit: "N/A",
                     currentIngredientName: ""
@@ -181,13 +194,30 @@ class RecipeDetailsPage extends React.Component {
         if (this.state.ingredients.length === 1) {
             this.setState(prevState => ({
                 ingredientInputError: "Please add at least one ingredient.",
-                ingredients: prevState.ingredients.filter(ingredient => ingredient.name !== e.name)
+                ingredients: prevState.ingredients.filter(ingredient => ingredient.name !== e.name),
+                ingredientsCopy: prevState.ingredients.filter(ingredient => ingredient.name !== e.name)
             }));
         } else {
             this.setState(prevState => ({
-                ingredients: prevState.ingredients.filter(ingredient => ingredient.name !== e.name)
+                ingredients: prevState.ingredients.filter(ingredient => ingredient.name !== e.name),
+                ingredientsCopy: prevState.ingredients.filter(ingredient => ingredient.name !== e.name)
             }));
         }
+    }
+
+    // If the original recipe requires 1000g of flour but the user only has 300g, 
+    // this function will help the user to recalculate the amount of ingredients needed for the recipe 
+    // when using 300g of flour instead of 1000g.
+    handleIngredientAmountInputChangeInAdjustingMode(e, originalAmount) {
+        const multiplier = e.target.value / originalAmount;
+        this.setState({
+            ingredientsCopy: this.state.ingredients.map(
+                ingredient => ({
+                    ...ingredient,
+                    amount: ingredient.amount && +(ingredient.amount * multiplier).toFixed(2),
+                })
+            )
+        });
     }
 
     instructionsTextareaChange(target) {
@@ -225,6 +255,8 @@ class RecipeDetailsPage extends React.Component {
             this.setState({
                 currentRecipe: recipe,
                 dynamicPortions: recipe.portions,
+                ingredients: recipe.ingredients,
+                ingredientsCopy: recipe.ingredients,
                 localPhoto: recipe.photoDownloadUri, // Set for later comparison whether photo changed.
                 photoPreview: recipe.photoDownloadUri, // Set to handle photo displaying.
             });
@@ -237,6 +269,8 @@ class RecipeDetailsPage extends React.Component {
                     this.setState({
                         currentRecipe: recipe,
                         dynamicPortions: recipe.portions,
+                        ingredients: recipe.ingredients,
+                        ingredientsCopy: recipe.ingredients,
                         localPhoto: recipe.photoDownloadUri, // Set for later comparison whether photo changed.
                         photoPreview: recipe.photoDownloadUri, // Set to handle photo displaying.
                     });
@@ -401,7 +435,9 @@ class RecipeDetailsPage extends React.Component {
             type: currentRecipe.type,
             portions: currentRecipe.portions,
             ingredients: currentRecipe.ingredients,
-            instructions: currentRecipe.instructions
+            instructions: currentRecipe.instructions,
+
+            ingredientsCopy: currentRecipe.ingredients,
         }, () => {
             this.instructionsTextareaChange(this.instructionsTextAreaRef.current)
         });
@@ -538,7 +574,7 @@ class RecipeDetailsPage extends React.Component {
 
     render() {
         const currentRecipe = this.state.currentRecipe;
-        const ingredients = currentRecipe ? currentRecipe.ingredients : null;
+        const ingredients = this.state.ingredientsCopy;
         return (
             <form className="recipeDetailsPage" onSubmit={this.saveChanges}>
                 {!this.dataLoading ? // Show loading animation while data is being loaded.
@@ -662,11 +698,18 @@ class RecipeDetailsPage extends React.Component {
                                     {!this.state.editModeActive ?
                                         <ul className="recipeDetailsPageIngredientsList">
                                             {Object.keys(ingredients).map((ingredient => {
-                                                return (<li className="recipeDetailsPageIngredientsItem" key={ingredients[ingredient].name}>
-                                                    <div className="recipeDetailsPageIngredientsItemAmount">{ingredients[ingredient].amount ? +(ingredients[ingredient].amount * this.state.dynamicIngredientsMultiplier).toFixed(4) : null}</div>
-                                                    <div className="recipeDetailsPageIngredientsItemUnit">{ingredients[ingredient].unit === "N/A" ? null : ingredients[ingredient].unit}</div>
-                                                    <div className="recipeDetailsPageIngredientsItemName">{ingredients[ingredient].name}</div>
-                                                </li>);
+                                                return (
+                                                    <li className="recipeDetailsPageIngredientsItem" key={ingredients[ingredient].name}>
+                                                        <div className="recipeDetailsPageIngredientsItemAmount">
+                                                            {(ingredients[ingredient].amount === null || ((typeof ingredients[ingredient].amount) === "undefined")) ?
+                                                                null
+                                                                :
+                                                                <input className="recipeDetailsPageIngredientsItemAmountAdjustingMode" type="number" autoComplete="off" onChange={(e) => this.handleIngredientAmountInputChangeInAdjustingMode(e, this.state.ingredients[ingredient].amount)} value={ingredients[ingredient].amount} minLength="1" maxLength="9" />
+                                                            }
+                                                        </div>
+                                                        <div className="recipeDetailsPageIngredientsItemUnit">{ingredients[ingredient].unit === "N/A" ? null : ingredients[ingredient].unit}</div>
+                                                        <div className="recipeDetailsPageIngredientsItemName">{ingredients[ingredient].name}</div>
+                                                    </li>);
                                             }))}
                                         </ul>
                                         :

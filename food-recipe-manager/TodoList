@@ -26,24 +26,33 @@ colors:
 
 
 =============================================== TODO ===============================================
-- recipe page list should by default be in alphabetical order. and maybe also add filter options for ordering...
+1. Make ingredients list alphabetical order.
 
-- improve filter feature. one button which opens many filters? (instead of multiple visible buttons. takes up space...)
-    - filter by name (alphabetical order).
-    - filter by rating.
-    - filter by time.
+2. Make it possible to edit an ingredient. Currently you can only remove an ingredient, or add a completely new one.
 
-- In profile page, add a box at top for showing stats? E.g. number of recipes, meat recipes, etc.... And add more as the features scale.
+3. Implement Favorites/Rating.
 
-- Make it possible to edit an ingredient's amount while viewing it (NOT EDIT MODE).
-  In this way, if you only have 900g flour, you can make the rest of the ingredients proportional to your "900g of flour",
-  instead of proportional to the portions. So, make it possible to edit the amount while viewing it.
-  And this should not save it. Saving is done through editing the recipe.
 
-- Improve how instructions are being added and visualized. 
-  Maybe introduce steps. Each step is one box of information, and so on.
+4. Improve filter feature: Make the filter design able to contain many different filters, and be easy to use and look good.
+    - Use one button which opens many filters?
+    - Dropdown?
+    - Pop-up?
+    - New page?
 
-- Implement Favorites. OR rating? And add corresponding filters.
+    - Filters to add:
+        - Filter by alphabetical order. A-Z, Z-A.
+        - Filter by rating. Highest. Lowest.
+        - Filter by time. Shortest. Longest.
+
+
+5. In profile page, add a box at top for showing stats? E.g. number of recipes, meat recipes, etc... 
+
+
+7. Improve how instructions are being added and visualized. 
+   Maybe introduce steps. Each step is one box of information, and so on.
+   OR, maybe a textarea is good enough, since it free writing might be preferable...
+
+
 
 
 
