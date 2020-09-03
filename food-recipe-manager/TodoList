@@ -26,7 +26,6 @@ colors:
 
 
 =============================================== TODO ===============================================
-1. Make ingredients list alphabetical order.
 
 2. Make it possible to edit an ingredient. Currently you can only remove an ingredient, or add a completely new one.
 
@@ -58,7 +57,11 @@ colors:
 
 - PROBLEMS:
     - Why is the UI in chrome-iphone not the same as in real-iphone. In real-iphone, the layout is messed up... In chrome-iphone, it looks perfect.
+    - The UI only looks good in Chrome...
 
+    - Control/Command click should open the clicked page in new tab.
+
+    - Optimize recipe page, by removing sorting on every render. Instead, when adding recipes, add in alphabetical order.
 
 
 - NEW FEATURES/PAGES?

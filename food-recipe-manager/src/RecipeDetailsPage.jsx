@@ -172,8 +172,8 @@ class RecipeDetailsPage extends React.Component {
             if (!this.state.ingredients.some(ingredient => ingredient.name === this.state.currentIngredientName)) {
                 this.setState(prevState => ({
                     ingredientInputError: null,
-                    ingredients: [...prevState.ingredients, { amount: prevState.currentIngredientAmount ? parseFloat(prevState.currentIngredientAmount) : null, unit: prevState.currentIngredientUnit, name: prevState.currentIngredientName }],
-                    ingredientsCopy: [...prevState.ingredients, { amount: prevState.currentIngredientAmount ? parseFloat(prevState.currentIngredientAmount) : null, unit: prevState.currentIngredientUnit, name: prevState.currentIngredientName }],
+                    ingredients: this.sortIngredients([...prevState.ingredients, { amount: prevState.currentIngredientAmount ? parseFloat(prevState.currentIngredientAmount) : null, unit: prevState.currentIngredientUnit, name: prevState.currentIngredientName }]),
+                    ingredientsCopy: this.sortIngredients([...prevState.ingredients, { amount: prevState.currentIngredientAmount ? parseFloat(prevState.currentIngredientAmount) : null, unit: prevState.currentIngredientUnit, name: prevState.currentIngredientName }]),
                     currentIngredientAmount: "",
                     currentIngredientUnit: "N/A",
                     currentIngredientName: ""
@@ -202,6 +202,24 @@ class RecipeDetailsPage extends React.Component {
                 ingredients: prevState.ingredients.filter(ingredient => ingredient.name !== e.name),
                 ingredientsCopy: prevState.ingredients.filter(ingredient => ingredient.name !== e.name)
             }));
+        }
+    }
+
+    sortIngredients(ingredients) {
+        if (ingredients) {
+            let sortedIngredients = Object.values(ingredients);
+            sortedIngredients.sort((a, b) => {
+                let ingredientA = a.name.toLowerCase();
+                let ingredientB = b.name.toLowerCase();
+                if (ingredientA < ingredientB) {
+                    return -1;
+                }
+                if (ingredientA > ingredientB) {
+                    return 1;
+                }
+                return 0;
+            });
+            return sortedIngredients
         }
     }
 
@@ -574,7 +592,8 @@ class RecipeDetailsPage extends React.Component {
 
     render() {
         const currentRecipe = this.state.currentRecipe;
-        const ingredients = this.state.ingredientsCopy;
+        const ingredientsCopy = this.state.ingredientsCopy;
+        const ingredients = this.state.ingredients;
         return (
             <form className="recipeDetailsPage" onSubmit={this.saveChanges}>
                 {!this.dataLoading ? // Show loading animation while data is being loaded.
@@ -697,18 +716,18 @@ class RecipeDetailsPage extends React.Component {
                                     <div className="recipeDetailsPageIngredientsLabel">Ingredients:</div>
                                     {!this.state.editModeActive ?
                                         <ul className="recipeDetailsPageIngredientsList">
-                                            {Object.keys(ingredients).map((ingredient => {
+                                            {Object.keys(ingredientsCopy).map((ingredient => {
                                                 return (
-                                                    <li className="recipeDetailsPageIngredientsItem" key={ingredients[ingredient].name}>
+                                                    <li className="recipeDetailsPageIngredientsItem" key={ingredientsCopy[ingredient].name}>
                                                         <div className="recipeDetailsPageIngredientsItemAmount">
-                                                            {(ingredients[ingredient].amount === null || ((typeof ingredients[ingredient].amount) === "undefined")) ?
+                                                            {(ingredientsCopy[ingredient].amount === null || ((typeof ingredientsCopy[ingredient].amount) === "undefined")) ?
                                                                 null
                                                                 :
-                                                                <input className="recipeDetailsPageIngredientsItemAmountAdjustingMode" type="number" autoComplete="off" onChange={(e) => this.handleIngredientAmountInputChangeInAdjustingMode(e, this.state.ingredients[ingredient].amount)} value={ingredients[ingredient].amount} minLength="1" maxLength="9" />
+                                                                <input className="recipeDetailsPageIngredientsItemAmountAdjustingMode" type="number" autoComplete="off" onChange={(e) => this.handleIngredientAmountInputChangeInAdjustingMode(e, ingredients[ingredient].amount)} value={ingredientsCopy[ingredient].amount} minLength="1" maxLength="9" />
                                                             }
                                                         </div>
-                                                        <div className="recipeDetailsPageIngredientsItemUnit">{ingredients[ingredient].unit === "N/A" ? null : ingredients[ingredient].unit}</div>
-                                                        <div className="recipeDetailsPageIngredientsItemName">{ingredients[ingredient].name}</div>
+                                                        <div className="recipeDetailsPageIngredientsItemUnit">{ingredientsCopy[ingredient].unit === "N/A" ? null : ingredientsCopy[ingredient].unit}</div>
+                                                        <div className="recipeDetailsPageIngredientsItemName">{ingredientsCopy[ingredient].name}</div>
                                                     </li>);
                                             }))}
                                         </ul>
@@ -732,12 +751,12 @@ class RecipeDetailsPage extends React.Component {
                                             </div>
 
                                             <ul className="recipeDetailsPageIngredientsList">
-                                                {Object.keys(this.state.ingredients).map((ingredient => {
-                                                    return (<li className="recipeDetailsPageIngredientsItem" key={this.state.ingredients[ingredient].name}>
-                                                        <div className="recipeDetailsPageIngredientsItemAmount">{this.state.ingredients[ingredient].amount}</div>
-                                                        <div className="recipeDetailsPageIngredientsItemUnit">{this.state.ingredients[ingredient].unit === "N/A" ? null : this.state.ingredients[ingredient].unit}</div>
-                                                        <div className="recipeDetailsPageIngredientsItemName">{this.state.ingredients[ingredient].name}</div>
-                                                        <div className="recipeDetailsPageIngredientsItemRemove"><button className="recipeDetailsPageIngredientsItemRemoveButton" onClick={() => this.removeIngredient(this.state.ingredients[ingredient])}>X</button></div>
+                                                {Object.keys(ingredients).map((ingredient => {
+                                                    return (<li className="recipeDetailsPageIngredientsItem" key={ingredients[ingredient].name}>
+                                                        <div className="recipeDetailsPageIngredientsItemAmount">{ingredients[ingredient].amount}</div>
+                                                        <div className="recipeDetailsPageIngredientsItemUnit">{ingredients[ingredient].unit === "N/A" ? null : ingredients[ingredient].unit}</div>
+                                                        <div className="recipeDetailsPageIngredientsItemName">{ingredients[ingredient].name}</div>
+                                                        <div className="recipeDetailsPageIngredientsItemRemove"><button className="recipeDetailsPageIngredientsItemRemoveButton" onClick={() => this.removeIngredient(ingredients[ingredient])}>X</button></div>
                                                     </li>);
                                                 }))}
                                             </ul>

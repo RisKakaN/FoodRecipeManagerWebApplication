@@ -122,7 +122,7 @@ class AddRecipePage extends React.Component {
             if (!this.state.ingredients.some(ingredient => ingredient.name === this.state.currentIngredientName)) {
                 this.setState(prevState => ({
                     ingredientInputError: null,
-                    ingredients: [...prevState.ingredients, { amount: prevState.currentIngredientAmount ? parseFloat(prevState.currentIngredientAmount) : null, unit: prevState.currentIngredientUnit, name: prevState.currentIngredientName }],
+                    ingredients: this.sortIngredients([...prevState.ingredients, { amount: prevState.currentIngredientAmount ? parseFloat(prevState.currentIngredientAmount) : null, unit: prevState.currentIngredientUnit, name: prevState.currentIngredientName }]),
                     currentIngredientAmount: "",
                     currentIngredientUnit: "N/A",
                     currentIngredientName: ""
@@ -149,6 +149,24 @@ class AddRecipePage extends React.Component {
             this.setState(prevState => ({
                 ingredients: prevState.ingredients.filter(ingredient => ingredient.name !== e.name)
             }));
+        }
+    }
+
+    sortIngredients(ingredients) {
+        if (ingredients) {
+            let sortedIngredients = Object.values(ingredients);
+            sortedIngredients.sort((a, b) => {
+                let ingredientA = a.name.toLowerCase();
+                let ingredientB = b.name.toLowerCase();
+                if (ingredientA < ingredientB) {
+                    return -1;
+                }
+                if (ingredientA > ingredientB) {
+                    return 1;
+                }
+                return 0;
+            });
+            return sortedIngredients
         }
     }
 
